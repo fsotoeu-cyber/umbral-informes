@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UMBRAL · Agencia Beta · Mayo 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap');
+ 
+  :root {
+    --azul: #1F3864; --azul-medio: #2E5FA3; --azul-claro: #EAF0F8;
+    --verde: #2D6A4F; --verde-bg: #D8F3DC; --ambar: #B45309; --ambar-bg: #FEF3C7;
+    --rojo: #991B1B; --rojo-bg: #FEE2E2; --gris: #F8F9FA; --gris-borde: #E5E7EB;
+    --texto: #111827; --texto-muted: #6B7280;
+  }
+ 
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: #F3F4F6; color: var(--texto); font-size: 14px; }
+ 
+  .header {
+    background: var(--azul); padding: 0; position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 32px; border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .logo { font-family: 'DM Serif Display', serif; font-size: 24px; color: white; letter-spacing: 4px; }
+  .logo span { color: #7EB8E8; }
+  .header-meta { text-align: right; }
+  .header-meta .agencia { font-size: 15px; font-weight: 600; color: white; }
+  .header-meta .fecha { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+  .header-meta .id { font-size: 11px; color: rgba(255,255,255,0.4); font-family: monospace; }
+ 
+  .nav { display: flex; gap: 2px; padding: 0 32px; background: #162D57; }
+  .nav a {
+    padding: 10px 16px; color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 500;
+    text-decoration: none; border-bottom: 2px solid transparent; transition: all 0.15s; cursor: pointer;
+  }
+  .nav a.active, .nav a:hover { color: white; border-bottom-color: #7EB8E8; }
+ 
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px 32px; }
+  .section { display: none; }
+  .section.active { display: block; }
+ 
+  .card {
+    background: white; border-radius: 10px; padding: 20px 24px;
+    border: 1px solid var(--gris-borde); margin-bottom: 16px;
+  }
+  .card-title {
+    font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px;
+    color: var(--texto-muted); margin-bottom: 16px; padding-bottom: 10px;
+    border-bottom: 1px solid var(--gris-borde);
+  }
+ 
+  .kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 20px; }
+  .kpi {
+    background: white; border-radius: 10px; padding: 16px 18px;
+    border: 1px solid var(--gris-borde); border-top: 3px solid var(--azul-medio);
+  }
+  .kpi.verde { border-top-color: var(--verde); }
+  .kpi.ambar { border-top-color: var(--ambar); }
+  .kpi.rojo  { border-top-color: var(--rojo);  }
+  .kpi-label { font-size: 11px; color: var(--texto-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+  .kpi-val   { font-size: 26px; font-weight: 600; color: var(--texto); margin: 4px 0 2px; line-height: 1; }
+  .kpi-sub   { font-size: 11px; color: var(--texto-muted); }
+ 
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--azul); color: white; padding: 10px 12px; text-align: left; font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--gris-borde); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #F9FAFB; }
+ 
+  .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px;
+  }
+  .badge-verde { background: var(--verde-bg); color: var(--verde); }
+  .badge-ambar { background: var(--ambar-bg); color: var(--ambar); }
+  .badge-rojo  { background: var(--rojo-bg);  color: var(--rojo);  }
+  .badge-gris  { background: #F3F4F6; color: var(--texto-muted); }
+ 
+  .alerta {
+    border-left: 4px solid; border-radius: 0 8px 8px 0;
+    padding: 12px 16px; margin-bottom: 10px; font-size: 13px;
+  }
+  .alerta-rojo  { border-color: var(--rojo);  background: var(--rojo-bg);  }
+  .alerta-ambar { border-color: var(--ambar); background: var(--ambar-bg); }
+  .alerta-verde { border-color: var(--verde); background: var(--verde-bg); }
+  .alerta-titulo { font-weight: 600; margin-bottom: 3px; }
+  .alerta-rojo .alerta-titulo  { color: var(--rojo); }
+  .alerta-ambar .alerta-titulo { color: var(--ambar); }
+  .alerta-verde .alerta-titulo { color: var(--verde); }
+ 
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+ 
+  .portal-card {
+    background: white; border-radius: 10px; padding: 18px 20px;
+    border: 1px solid var(--gris-borde);
+  }
+  .portal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .portal-name { font-weight: 600; font-size: 15px; }
+  .portal-rows { display: flex; flex-direction: column; gap: 8px; }
+  .portal-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--gris-borde); }
+  .portal-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .portal-key { color: var(--texto-muted); }
+  .portal-val { font-weight: 500; color: var(--texto); text-align: right; max-width: 55%; }
+ 
+  .quality-bar-bg { background: #E5E7EB; border-radius: 4px; height: 8px; flex: 1; margin: 0 10px; }
+  .quality-bar-fill { height: 8px; border-radius: 4px; }
+  .quality-row { display: flex; align-items: center; font-size: 12px; margin-bottom: 8px; }
+  .quality-label { width: 110px; color: var(--texto-muted); }
+  .quality-pct { width: 36px; text-align: right; font-weight: 600; }
+ 
+  .comp-highlight { background: #EAF0F8 !important; font-weight: 600; }
+ 
+  .footer {
+    background: var(--azul); color: rgba(255,255,255,0.5); font-size: 11px;
+    padding: 16px 32px; display: flex; justify-content: space-between; align-items: center;
+    margin-top: 32px;
+  }
+  .footer .ok-badge { background: rgba(45,106,79,0.3); color: #6EE7B7; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+ 
+  .discrepancia { background: var(--rojo-bg); color: var(--rojo); font-weight: 600; font-size: 12px; }
+  .stars { color: #F59E0B; font-size: 16px; letter-spacing: 1px; }
+ 
+  .section-hero {
+    background: linear-gradient(135deg, var(--azul) 0%, #2E5FA3 100%);
+    color: white; border-radius: 10px; padding: 20px 24px; margin-bottom: 20px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .section-hero h2 { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 4px; }
+  .section-hero p { font-size: 13px; color: rgba(255,255,255,0.7); }
+</style>
+</head>
+<body>
+ 
+<div class="header">
+  <div class="header-inner">
+    <div>
+      <div class="logo">UMBRAL<span>·</span></div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;">Inteligencia Inmobiliaria Automatizada</div>
+    </div>
+    <div class="header-meta">
+      <div class="agencia">Agencia Beta · L'Horta Oest</div>
+      <div class="fecha">Informe mensual · Mayo 2026 · Generado automáticamente el 2026-05-11 a las 08:00</div>
+      <div class="id">ID: UMBRAL_2026_05_AG002 · Todas las fuentes validadas ✓</div>
+    </div>
+  </div>
+  <div class="nav">
+    <a class="active" onclick="showSection('resumen', this)">▸ Resumen ejecutivo</a>
+    <a onclick="showSection('cartera', this)">▸ Análisis de cartera</a>
+    <a onclick="showSection('portales', this)">▸ Auditoría de portales</a>
+    <a onclick="showSection('competencia', this)">▸ Competencia Aldaia</a>
+  </div>
+</div>
+ 
+<div class="container">
+
+<!-- ══════════════════════════════════════════════════════════
+     SECCIÓN 1: RESUMEN EJECUTIVO
+     (KPIs, Alertas, Contexto, Verificación, Radar, Recomendaciones)
+══════════════════════════════════════════════════════════ -->
+<div id="s-resumen" class="section active">
+ 
+  <div class="kpi-row">
+    <div class="kpi verde">
+      <div class="kpi-label">Reputación Google</div>
+      <div class="kpi-val">N/D ★</div>
+      <div class="kpi-sub">N/D reseñas verificadas</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Cartera activa</div>
+      <div class="kpi-val">N/D</div>
+      <div class="kpi-sub">inmuebles únicos</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Valor total cartera</div>
+      <div class="kpi-val">N/D</div>
+      <div class="kpi-sub">en venta</div>
+    </div>
+    <div class="kpi ambar">
+      <div class="kpi-label">Calidad Idealista</div>
+      <div class="kpi-val">N/D%</div>
+      <div class="kpi-sub">venta · por debajo del óptimo</div>
+    </div>
+    <div class="kpi rojo">
+      <div class="kpi-label">Alerta crítica</div>
+      <div class="kpi-val">0</div>
+      <div class="kpi-sub">VC1877 · +2 meses en mercado</div>
+    </div>
+  </div>
+ 
+  <div class="grid2">
+    <div>
+      <div class="card">
+        <div class="card-title">Alertas del mes</div>
+        <div class="alerta alerta-ambar"><div class="alerta-titulo">GfK alemán</div>Índice en -28, puede alargar decisión</div><div class="alerta alerta-verde"><div class="alerta-titulo">GBP/EUR favorable</div>Cotización en 1.16 – activar leads británicos</div><div class="alerta alerta-verde"><div class="alerta-titulo">Obra nueva activa</div>AEDAS (223 viv.), Alibuilding</div><div class="alerta alerta-ambar"><div class="alerta-titulo">Alerta urbanística</div>PGOU Jávea sin aprobar</div>
+        
+      </div>
+    </div>
+ 
+    <div>
+      <div class="card">
+        <div class="card-title">Contexto macro · 2026-05-11</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gris-borde);">
+            <div><div style="font-weight:600;font-size:14px;">Euríbor 12M</div><div style="font-size:11px;color:var(--texto-muted);">BCE</div></div>
+            <div style="font-size:20px;font-weight:600;color:var(--azul);">2.7468%</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gris-borde);">
+            <div><div style="font-weight:600;font-size:14px;">IPC España</div><div style="font-size:11px;color:var(--texto-muted);">INE · Anual</div></div>
+            <div style="font-size:20px;font-weight:600;color:var(--azul);">2.9%</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gris-borde);">
+            <div><div style="font-weight:600;font-size:14px;">GBP / EUR</div><div style="font-size:11px;color:var(--texto-muted);">ExchangeRate API</div></div>
+            <div style="font-size:20px;font-weight:600;color:var(--verde);">1.16 ↑</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;">
+            <div><div style="font-weight:600;font-size:14px;">Tasa depósito BCE</div><div style="font-size:11px;color:var(--texto-muted);">ECB SDMX</div></div>
+            <div style="font-size:20px;font-weight:600;color:var(--azul);">2%</div>
+          </div>
+        </div>
+        <div style="margin-top:14px;padding:12px;background:var(--azul-claro);border-radius:8px;font-size:12px;color:var(--azul);">
+          <strong>Lectura para Aldaia:</strong> Euríbor en 2.7468% facilita financiación en el rango de precio medio de la cartera. Clientes con hipoteca variable en rango cómodo.
+        </div>
+      </div>
+ 
+      <div class="card">
+        <div class="card-title">Verificación de fuentes</div>
+        <table>
+          <tr><th>Fuente</th><th>Estado</th></tr>
+          <tr><td>euribor</td><td><span class="badge badge-verde">Extracción Exitosa</span></td></tr><tr><td>ipc</td><td><span class="badge badge-verde">Extracción Exitosa</span></td></tr><tr><td>gbp</td><td><span class="badge badge-verde">Extracción Exitosa</span></td></tr><tr><td>bce</td><td><span class="badge badge-verde">Validación Exitosa</span></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Radar y Recomendaciones DENTRO de Resumen Ejecutivo -->
+  <div class="card">
+    <div class="card-title">🔍 Radar de alertas del mes</div>
+    <canvas id="chartAlertas" width="400" height="150"></canvas>
+    <div style="margin-top: 16px; font-size: 12px; color: var(--texto-muted);">
+      Este gráfico muestra la distribución de alertas detectadas automáticamente por UMBRAL. 
+      Las alertas <strong style="color:var(--rojo);">rojas</strong> requieren acción inmediata; 
+      las <strong style="color:var(--ambar);">ámbar</strong> son avisos importantes; 
+      las <strong style="color:var(--verde);">verdes</strong> son oportunidades.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💡 Recomendaciones estratégicas (generadas por UMBRAL)</div>
+    <div id="recomendaciones-container" style="display:flex; flex-direction:column; gap:12px;"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SECCIÓN 2: ANÁLISIS DE CARTERA
+══════════════════════════════════════════════════════════ -->
+<div id="s-cartera" class="section">
+  <div class="section-hero">
+    <div>
+      <h2>Análisis de cartera activa</h2>
+      <p>12 inmuebles únicos · Semáforo estratégico · Tiempo en mercado · Alertas de precio</p>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:28px;font-weight:600;">1.783.800€</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.6);">valor total en venta</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Semáforo estratégico de cartera · Mayo 2026</div>
+    <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Ref.</th><th>Tipo</th><th>Municipio</th><th>Precio</th><th>m² / Precio m²</th><th>Cert. Energ.</th><th>Tiempo mercado</th><th>Semáforo</th><th>Observación clave</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>VC1877</strong></td><td>Garaje / Plaza</td><td>Aldaia</td><td>11.000€</td><td>17m² / —</td><td><span class="badge badge-gris">N/D</span></td><td style="color:var(--rojo);font-weight:600;">+2 meses</td><td><span class="badge badge-rojo">● ROJO</span></td><td style="color:var(--rojo);font-size:12px;">⚠ Revisar precio o retirar</td></tr>
+        <tr><td><strong>VC1808</strong></td><td>Casa pueblo</td><td>Aldaia</td><td>199.900€</td><td>418m² / 478€</td><td><span class="badge badge-ambar">D</span></td><td>7 días</td><td><span class="badge badge-verde">● VERDE</span></td><td style="font-size:12px;">53 fotos + tour 360° + 11 planos</td></tr>
+        <tr><td><strong>VC1927</strong></td><td>Adosado</td><td>Sagunto / Almardá</td><td>315.000€</td><td>117m² / 2.692€</td><td><span class="badge badge-ambar">D</span></td><td>7 días</td><td><span class="badge badge-verde">● VERDE</span></td><td style="color:var(--rojo);font-size:12px;font-weight:600;">⚠ Precio web 295k€ ≠ Idealista 315k€</td></tr>
+        <tr><td><strong>VC1934</strong></td><td>Garaje / Plaza</td><td>Aldaia</td><td>13.500€</td><td>— / —</td><td><span class="badge badge-gris">N/D</span></td><td>7 días</td><td><span class="badge badge-verde">● VERDE</span></td><td style="font-size:12px;">Zona centro, difícil aparcamiento</td></tr>
+        <tr><td><strong>VC1954</strong></td><td>Solar urbano</td><td>Quart de Poblet</td><td>76.000€</td><td>80m² / 950€</td><td><span class="badge badge-gris">N/D</span></td><td>7 días</td><td><span class="badge badge-verde">● VERDE</span></td><td style="font-size:12px;">6m fachada, zona consolidada</td></tr>
+        <tr><td><strong>VC1965</strong></td><td>Piso</td><td>Aldaia</td><td>149.500€</td><td>71m² / 2.106€</td><td><span class="badge badge-ambar">E</span></td><td>1 día</td><td><span class="badge badge-verde">● VERDE</span></td><td style="font-size:12px;">3ª exterior sin ascensor, balcón</td></tr>
+        <tr><td><strong>VC1968</strong></td><td>Chalet ind.</td><td>Chiva</td><td>350.000€</td><td>245m² / 1.429€</td><td><span class="badge badge-ambar">E</span></td><td>7 días</td><td><span class="badge badge-verde">● VERDE</span></td><td style="font-size:12px;">Piscina propia, parcela 1.282m²</td></tr>
+        <tr><td><strong>VC1969</strong></td><td>Piso</td><td>Valencia (Jesús)</td><td>169.000€</td><td>64m² / 2.641€</td><td><span class="badge badge-ambar">E</span></td><td>9 horas</td><td><span class="badge badge-verde">● VERDE</span></td><td style="font-size:12px;">3ª sin ascensor, zona Hospital La Fe</td></tr>
+        <tr><td><strong>VC1972</strong></td><td>Dúplex</td><td>Tavernes Valldigna</td><td>135.000€</td><td>80m² / 1.688€</td><td><span class="badge badge-ambar">E</span></td><td>Reciente</td><td><span class="badge badge-verde">● VERDE</span></td><td style="font-size:12px;">Gran terraza, trastero, AC</td></tr>
+        <tr><td><strong>VC1979</strong></td><td>Local alquiler</td><td>Aldaia</td><td>525€/mes</td><td>47m² / 11€</td><td><span class="badge badge-rojo">F</span></td><td>10 días</td><td><span class="badge badge-verde">● VERDE</span></td><td style="font-size:12px;">Reformado, frente Mercadona</td></tr>
+        <tr><td><strong>VC1981</strong></td><td>Piso</td><td>Valencia (Jesús)</td><td>179.900€</td><td>81m² / 2.221€</td><td><span class="badge badge-ambar">E</span></td><td>9 horas</td><td><span class="badge badge-verde">● VERDE</span></td><td style="font-size:12px;">Duplicado: Idealista + Milanuncios + web</td></tr>
+        <tr><td><strong>VC1808b</strong></td><td>Solar urbano</td><td>Alaquàs</td><td>185.000€</td><td>227m² / 815€</td><td><span class="badge badge-gris">N/D</span></td><td>7 días</td><td><span class="badge badge-verde">● VERDE</span></td><td style="font-size:12px;">8m fachada, junto Av. Blasco Ibáñez</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">Distribución energética de cartera</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;">
+          <div style="width:30px;height:30px;background:#2D6A4F;border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:14px;">D</div>
+          <div style="flex:1;"><div style="background:#E5E7EB;border-radius:4px;height:8px;"><div style="width:16.7%;background:#2D6A4F;height:8px;border-radius:4px;"></div></div></div>
+          <div style="font-weight:600;">2 inmuebles</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;">
+          <div style="width:30px;height:30px;background:#B45309;border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:14px;">E</div>
+          <div style="flex:1;"><div style="background:#E5E7EB;border-radius:4px;height:8px;"><div style="width:58.3%;background:#B45309;height:8px;border-radius:4px;"></div></div></div>
+          <div style="font-weight:600;">7 inmuebles</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;">
+          <div style="width:30px;height:30px;background:#991B1B;border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:14px;">F</div>
+          <div style="flex:1;"><div style="background:#E5E7EB;border-radius:4px;height:8px;"><div style="width:8.3%;background:#991B1B;height:8px;border-radius:4px;"></div></div></div>
+          <div style="font-weight:600;">1 inmueble</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;">
+          <div style="width:30px;height:30px;background:#9CA3AF;border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:14px;">—</div>
+          <div style="flex:1;"><div style="background:#E5E7EB;border-radius:4px;height:8px;"><div style="width:16.7%;background:#9CA3AF;height:8px;border-radius:4px;"></div></div></div>
+          <div style="font-weight:600;">2 sin cert.</div>
+        </div>
+        <div style="margin-top:8px;padding:10px;background:#FEF3C7;border-radius:8px;font-size:12px;color:#92400E;">
+          <strong>Oportunidad:</strong> Cartera dominada por letras E/F. Comunicar rehabilitación energética como valor añadido diferencial.
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Tiempo en mercado</div>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:4px;">
+        <div style="background:var(--verde-bg);border-radius:8px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-size:12px;color:var(--verde);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Verde · Reciente (&lt;15 días)</div><div style="font-size:11px;color:var(--verde);margin-top:2px;">Stock dinámico y fresco</div></div>
+          <div style="font-size:32px;font-weight:700;color:var(--verde);">11</div>
+        </div>
+        <div style="background:var(--ambar-bg);border-radius:8px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-size:12px;color:var(--ambar);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Amarillo · Medio (15–45 días)</div><div style="font-size:11px;color:var(--ambar);margin-top:2px;">Revisar estrategia</div></div>
+          <div style="font-size:32px;font-weight:700;color:var(--ambar);">0</div>
+        </div>
+        <div style="background:var(--rojo-bg);border-radius:8px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-size:12px;color:var(--rojo);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Rojo · Largo (&gt;45 días)</div><div style="font-size:11px;color:var(--rojo);margin-top:2px;">VC1877 — Garaje Aldaia (+2 meses)</div></div>
+          <div style="font-size:32px;font-weight:700;color:var(--rojo);">1</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SECCIÓN 3: AUDITORÍA DE PORTALES
+══════════════════════════════════════════════════════════ -->
+<div id="s-portales" class="section">
+  <div class="section-hero">
+    <div><h2>Auditoría de presencia digital</h2><p>6 portales analizados · Calidad de publicación · Discrepancias detectadas · Errores técnicos</p></div>
+    <div style="text-align:right;"><div style="font-size:13px;color:rgba(255,255,255,0.7);">Reputación Google</div><div style="font-size:28px;font-weight:600;">4.9 ★ <span style="font-size:16px;font-weight:400;">/ 5</span></div><div style="font-size:12px;color:rgba(255,255,255,0.6);">565 reseñas verificadas</div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SECCIÓN 4: ANÁLISIS COMPETITIVO
+══════════════════════════════════════════════════════════ -->
+<div id="s-competencia" class="section">
+  <div class="section-hero">
+    <div><h2>Análisis competitivo · Aldaia</h2><p>ValenCasa vs. principales agencias activas en L'Horta Oest · Mayo 2026</p></div>
+    <div style="text-align:right;"><div style="font-size:13px;color:rgba(255,255,255,0.7);">Posición ValenCasa</div><div style="font-size:28px;font-weight:600;">#1 Reputación</div><div style="font-size:12px;color:rgba(255,255,255,0.6);">en Google · Aldaia</div></div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<div class="footer">
+  <span>UMBRAL · Inteligencia Inmobiliaria Local · IA Operativa S.L. · Documento confidencial · 2026-05-11</span>
+  <span class="ok-badge">✓ Generado automáticamente · UMBRAL v1.0</span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+// Función de navegación (siempre se define, incluso si falla el resto)
+function showSection(id, el) {
+  try {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
+    document.getElementById('s-' + id).classList.add('active');
+    if (el) el.classList.add('active');
+  } catch(e) { console.error('Error en showSection:', e); }
+}
+
+// El resto del script (gráfico + recomendaciones) en un try/catch para que no bloquee la navegación
+try {
+  (function() {
+    var kpis = {"reputacion_google":null,"resenas_google":null,"calidad_idealista":null,"cartera_activa":null,"valor_cartera":null,"alerta_especifica":null};
+    var alertas = [{"nivel":"ambar","titulo":"GfK alemán","descripcion":"Índice en -28, puede alargar decisión"},{"nivel":"verde","titulo":"GBP/EUR favorable","descripcion":"Cotización en 1.16 – activar leads británicos"},{"nivel":"verde","titulo":"Obra nueva activa","descripcion":"AEDAS (223 viv.), Alibuilding"},{"nivel":"ambar","titulo":"Alerta urbanística","descripcion":"PGOU Jávea sin aprobar"}];
+    var contexto = {"euribor_12m":2.7468,"ipc_anual":2.9,"gbp_eur":1.16,"tipo_deposito_bce":2,"gfk_alemania":-28,"cbs_paisesbajos":-30};
+
+    if (typeof kpis !== 'object') kpis = {};
+    if (!Array.isArray(alertas)) alertas = [];
+    if (typeof contexto !== 'object') contexto = {};
+
+    // Contar alertas (versión robusta con includes)
+    const contador = { rojo: 0, ambar: 0, verde: 0 };
+    alertas.forEach(a => {
+      const nivel = (a.nivel || '').toLowerCase();
+      if (nivel.includes('rojo')) contador.rojo++;
+      else if (nivel.includes('ambar') || nivel.includes('warning')) contador.ambar++;
+      else if (nivel.includes('verde') || nivel.includes('ok')) contador.verde++;
+    });
+
+    // Gráfico de barras (solo si el canvas existe)
+    const canvas = document.getElementById('chartAlertas');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['🚨 Críticas', '⚠️ Avisos', '✅ Oportunidades'],
+          datasets: [{
+            label: 'Número de alertas',
+            data: [contador.rojo, contador.ambar, contador.verde],
+            backgroundColor: ['#991B1B', '#B45309', '#2D6A4F'],
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        }
+      });
+    }
+
+    // Recomendaciones
+    const recomendaciones = [];
+    if (kpis.calidad_idealista && kpis.calidad_idealista < 75) {
+      recomendaciones.push({
+        prioridad: 'alta',
+        texto: 'Tu calidad de publicación en Idealista es del ' + kpis.calidad_idealista + '%. Subir al 75% o más te daría mayor visibilidad en el portal sin coste adicional.'
+      });
+    }
+    if (kpis.reputacion_google && kpis.reputacion_google >= 4.5) {
+      recomendaciones.push({
+        prioridad: 'oportunidad',
+        texto: 'Con ' + kpis.reputacion_google + '★ y ' + (kpis.resenas_google || 'muchas') + ' reseñas, tienes una reputación excelente. Úsala en tus campañas de marketing.'
+      });
+    }
+    if (contexto.gbp_eur && contexto.gbp_eur > 1.15) {
+      recomendaciones.push({
+        prioridad: 'media',
+        texto: 'La libra esterlina está en ' + contexto.gbp_eur + ' GBP/EUR. Es un momento favorable para captar compradores británicos.'
+      });
+    }
+    if (contexto.euribor_12m && contexto.euribor_12m < 3.0) {
+      recomendaciones.push({
+        prioridad: 'media',
+        texto: 'El Euríbor está en el ' + contexto.euribor_12m + '%, facilitando la financiación.'
+      });
+    }
+    if (recomendaciones.length === 0) {
+      recomendaciones.push({
+        prioridad: 'info',
+        texto: 'UMBRAL no ha detectado alertas urgentes este mes.'
+      });
+    }
+
+    const container = document.getElementById('recomendaciones-container');
+    if (container) {
+      const clases = {
+        alta: 'alerta alerta-rojo',
+        media: 'alerta alerta-ambar',
+        oportunidad: 'alerta alerta-verde',
+        info: 'alerta'
+      };
+      recomendaciones.forEach(r => {
+        const div = document.createElement('div');
+        div.className = clases[r.prioridad] || 'alerta';
+        div.innerHTML = '<div class="alerta-titulo">' +
+          (r.prioridad === 'alta' ? '🔴 Acción prioritaria' :
+           r.prioridad === 'media' ? '🟡 Recomendación' :
+           '✅ Oportunidad') +
+          '</div>' + r.texto;
+        container.appendChild(div);
+      });
+    }
+  })();
+} catch(e) {
+  console.error('Error en gráfico/recomendaciones:', e);
+}
+</script>
+</body>
+</html>
