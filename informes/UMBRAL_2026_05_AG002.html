@@ -211,7 +211,7 @@
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gris-borde);">
             <div><div style="font-weight:600;font-size:14px;">IPC España</div><div style="font-size:11px;color:var(--texto-muted);">INE · Anual</div></div>
-            <div style="font-size:20px;font-weight:600;color:var(--azul);">N/D%</div>
+            <div style="font-size:20px;font-weight:600;color:var(--azul);">2.9%</div>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gris-borde);">
             <div><div style="font-weight:600;font-size:14px;">GBP / EUR</div><div style="font-size:11px;color:var(--texto-muted);">ExchangeRate API</div></div>
@@ -231,7 +231,7 @@
         <div class="card-title">Verificación de fuentes</div>
         <table>
           <tr><th>Fuente</th><th>Estado</th></tr>
-          <tr><td>euribor</td><td><span class="badge badge-ambar">OK</span></td></tr><tr><td>ipc</td><td><span class="badge badge-ambar">no_disponible</span></td></tr><tr><td>gbp</td><td><span class="badge badge-ambar">no_disponible</span></td></tr><tr><td>bce</td><td><span class="badge badge-ambar">no_disponible</span></td></tr>
+          <tr><td>euribor</td><td><span class="badge badge-ambar">OK</span></td></tr><tr><td>ipc</td><td><span class="badge badge-ambar">OK</span></td></tr><tr><td>gbp</td><td><span class="badge badge-ambar">OK</span></td></tr><tr><td>bce</td><td><span class="badge badge-ambar">OK</span></td></tr>
         </table>
       </div>
     </div>
@@ -389,7 +389,7 @@ try {
   (function() {
     var kpis = {"reputacion_google":null,"resenas_google":null,"calidad_idealista":null,"cartera_activa":null,"valor_cartera":null,"alerta_especifica":null};
     var alertas = [{"nivel":"ambar","titulo":"GfK alemán","descripcion":"Índice en -28, puede alargar decisión"},{"nivel":"verde","titulo":"GBP/EUR favorable","descripcion":"Cotización en 1.15 – activar leads británicos"},{"nivel":"verde","titulo":"Obra nueva activa","descripcion":"AEDAS (223 viv.), Alibuilding"},{"nivel":"ambar","titulo":"Alerta urbanística","descripcion":"PGOU Jávea sin aprobar"}];
-    var contexto = {"euribor_12m":2.7468,"ipc_anual":null,"gbp_eur":1.15,"tipo_deposito_bce":2,"gfk_alemania":-28,"cbs_paisesbajos":-30};
+    var contexto = {"euribor_12m":2.7468,"ipc_anual":2.9,"gbp_eur":1.15,"tipo_deposito_bce":2,"gfk_alemania":-28,"cbs_paisesbajos":-30};
 
     if (typeof kpis !== 'object') kpis = {};
     if (!Array.isArray(alertas)) alertas = [];
