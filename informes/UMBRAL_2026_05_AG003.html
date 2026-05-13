@@ -144,7 +144,7 @@
     </div>
     <div class="header-meta">
       <div class="agencia">ValenCasa Aldaia · L'Horta Oest</div>
-      <div class="fecha">Informe mensual · Mayo 2026 · Generado automáticamente el 2026-05-12 a las 08:00</div>
+      <div class="fecha">Informe mensual · Mayo 2026 · Generado automáticamente el 2026-05-13 a las 08:00</div>
       <div class="id">ID: UMBRAL_2026_05_AG003 · Todas las fuentes validadas ✓</div>
     </div>
   </div>
@@ -196,14 +196,14 @@
     <div>
       <div class="card">
         <div class="card-title">Alertas del mes</div>
-        <div class="alerta alerta-verde"><div class="alerta-titulo">GBP/EUR favorable</div>Cotización en 1.16 – activar leads británicos</div>
+        <div class="alerta alerta-verde"><div class="alerta-titulo">GBP/EUR favorable</div>Cotización en 1.15 – activar leads británicos</div>
         <div class="alerta alerta-rojo"><div class="alerta-titulo">🔴 Alerta específica de agencia</div>Garaje Aldaia +2 meses sin vender</div>
       </div>
     </div>
  
     <div>
       <div class="card">
-        <div class="card-title">Contexto macro · 2026-05-12</div>
+        <div class="card-title">Contexto macro · 2026-05-13</div>
         <div style="display:flex;flex-direction:column;gap:10px;">
           <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gris-borde);">
             <div><div style="font-weight:600;font-size:14px;">Euríbor 12M</div><div style="font-size:11px;color:var(--texto-muted);">BCE</div></div>
@@ -215,11 +215,11 @@
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gris-borde);">
             <div><div style="font-weight:600;font-size:14px;">GBP / EUR</div><div style="font-size:11px;color:var(--texto-muted);">ExchangeRate API</div></div>
-            <div style="font-size:20px;font-weight:600;color:var(--verde);">1.16 ↑</div>
+            <div style="font-size:20px;font-weight:600;color:var(--verde);">1.15 ↑</div>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;">
             <div><div style="font-weight:600;font-size:14px;">Tasa depósito BCE</div><div style="font-size:11px;color:var(--texto-muted);">ECB SDMX</div></div>
-            <div style="font-size:20px;font-weight:600;color:var(--azul);">2%</div>
+            <div style="font-size:20px;font-weight:600;color:var(--azul);">N/D%</div>
           </div>
         </div>
         <div style="margin-top:14px;padding:12px;background:var(--azul-claro);border-radius:8px;font-size:12px;color:var(--azul);">
@@ -231,7 +231,7 @@
         <div class="card-title">Verificación de fuentes</div>
         <table>
           <tr><th>Fuente</th><th>Estado</th></tr>
-          <tr><td>euribor</td><td><span class="badge badge-verde">Extracción Exitosa</span></td></tr><tr><td>ipc</td><td><span class="badge badge-verde">Extracción Exitosa</span></td></tr><tr><td>gbp</td><td><span class="badge badge-verde">Extracción Exitosa</span></td></tr><tr><td>bce</td><td><span class="badge badge-verde">Validación Exitosa</span></td></tr>
+          <tr><td>euribor</td><td><span class="badge badge-verde">Extracción Exitosa</span></td></tr><tr><td>ipc</td><td><span class="badge badge-verde">Extracción Exitosa</span></td></tr><tr><td>gbp</td><td><span class="badge badge-verde">Extracción Exitosa</span></td></tr><tr><td>bce</td><td><span class="badge badge-rojo">Error API: Cannot read properties of undefined (reading '0')</span></td></tr>
         </table>
       </div>
     </div>
@@ -368,7 +368,7 @@
 </div><!-- /container -->
 
 <div class="footer">
-  <span>UMBRAL · Inteligencia Inmobiliaria Local · IA Operativa S.L. · Documento confidencial · 2026-05-12</span>
+  <span>UMBRAL · Inteligencia Inmobiliaria Local · IA Operativa S.L. · Documento confidencial · 2026-05-13</span>
   <span class="ok-badge">✓ Generado automáticamente · UMBRAL v1.0</span>
 </div>
 
@@ -388,8 +388,8 @@ function showSection(id, el) {
 try {
   (function() {
     var kpis = {"reputacion_google":4.9,"resenas_google":565,"calidad_idealista":63,"cartera_activa":12,"valor_cartera":1783800,"alerta_especifica":"Garaje Aldaia +2 meses sin vender"};
-    var alertas = [{"nivel":"verde","titulo":"GBP/EUR favorable","descripcion":"Cotización en 1.16 – activar leads británicos"}];
-    var contexto = {"euribor_12m":2.7468,"ipc_anual":2.9,"gbp_eur":1.16,"tipo_deposito_bce":2,"gfk_alemania":null,"cbs_paisesbajos":null};
+    var alertas = [{"nivel":"verde","titulo":"GBP/EUR favorable","descripcion":"Cotización en 1.15 – activar leads británicos"}];
+    var contexto = {"euribor_12m":2.7468,"ipc_anual":2.9,"gbp_eur":1.15,"tipo_deposito_bce":null,"gfk_alemania":null,"cbs_paisesbajos":null};
 
     if (typeof kpis !== 'object') kpis = {};
     if (!Array.isArray(alertas)) alertas = [];
