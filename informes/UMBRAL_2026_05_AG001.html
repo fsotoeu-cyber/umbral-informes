@@ -1,385 +1,322 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UMBRAL · Agencia Demo · 2026-05-17</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap');
- 
-  :root {
-    --azul: #1F3864; --azul-medio: #2E5FA3; --azul-claro: #EAF0F8;
-    --verde: #2D6A4F; --verde-bg: #D8F3DC; --ambar: #B45309; --ambar-bg: #FEF3C7;
-    --rojo: #991B1B; --rojo-bg: #FEE2E2; --gris: #F8F9FA; --gris-borde: #E5E7EB;
-    --texto: #111827; --texto-muted: #6B7280;
-  }
- 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: #F3F4F6; color: var(--texto); font-size: 14px; }
- 
-  .header {
-    background: var(--azul); padding: 0; position: sticky; top: 0; z-index: 100;
-  }
-  .header-inner {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 32px; border-bottom: 1px solid rgba(255,255,255,0.1);
-  }
-  .logo { font-family: 'DM Serif Display', serif; font-size: 24px; color: white; letter-spacing: 4px; }
-  .logo span { color: #7EB8E8; }
-  .header-meta { text-align: right; }
-  .header-meta .agencia { font-size: 15px; font-weight: 600; color: white; }
-  .header-meta .fecha { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
-  .header-meta .id { font-size: 11px; color: rgba(255,255,255,0.4); font-family: monospace; }
- 
-  .nav { display: flex; gap: 2px; padding: 0 32px; background: #162D57; }
-  .nav a {
-    padding: 10px 16px; color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 500;
-    text-decoration: none; border-bottom: 2px solid transparent; transition: all 0.15s; cursor: pointer;
-  }
-  .nav a.active, .nav a:hover { color: white; border-bottom-color: #7EB8E8; }
- 
-  .container { max-width: 1200px; margin: 0 auto; padding: 24px 32px; }
-  .section { display: none; }
-  .section.active { display: block; }
- 
-  .card {
-    background: white; border-radius: 10px; padding: 20px 24px;
-    border: 1px solid var(--gris-borde); margin-bottom: 16px;
-  }
-  .card-title {
-    font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px;
-    color: var(--texto-muted); margin-bottom: 16px; padding-bottom: 10px;
-    border-bottom: 1px solid var(--gris-borde);
-  }
- 
-  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 20px; }
-  .kpi {
-    background: white; border-radius: 10px; padding: 16px 18px;
-    border: 1px solid var(--gris-borde); border-top: 3px solid var(--azul-medio);
-  }
-  .kpi.verde { border-top-color: var(--verde); }
-  .kpi.ambar { border-top-color: var(--ambar); }
-  .kpi.rojo  { border-top-color: var(--rojo);  }
-  .kpi-label { font-size: 11px; color: var(--texto-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
-  .kpi-val   { font-size: 26px; font-weight: 600; color: var(--texto); margin: 4px 0 2px; line-height: 1; }
-  .kpi-sub   { font-size: 11px; color: var(--texto-muted); }
- 
-  .badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px;
-  }
-  .badge-verde { background: var(--verde-bg); color: var(--verde); }
-  .badge-ambar { background: var(--ambar-bg); color: var(--ambar); }
-  .badge-rojo  { background: var(--rojo-bg);  color: var(--rojo);  }
-  .badge-gris  { background: #F3F4F6; color: var(--texto-muted); }
- 
-  .alerta {
-    border-left: 4px solid; border-radius: 0 8px 8px 0;
-    padding: 12px 16px; margin-bottom: 10px; font-size: 13px;
-  }
-  .alerta-rojo  { border-color: var(--rojo);  background: var(--rojo-bg);  }
-  .alerta-ambar { border-color: var(--ambar); background: var(--ambar-bg); }
-  .alerta-verde { border-color: var(--verde); background: var(--verde-bg); }
-  .alerta-titulo { font-weight: 600; margin-bottom: 3px; }
-  .alerta-rojo .alerta-titulo  { color: var(--rojo); }
-  .alerta-ambar .alerta-titulo { color: var(--ambar); }
-  .alerta-verde .alerta-titulo { color: var(--verde); }
- 
-  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  @media (max-width: 768px) { .grid2 { grid-template-columns: 1fr; } }
- 
-  .narrativa-box {
-    background: linear-gradient(135deg, var(--azul-claro) 0%, white 100%);
-    border-left: 4px solid var(--azul-medio);
-    padding: 20px 24px;
-    border-radius: 0 10px 10px 0;
-    font-size: 14px;
-    line-height: 1.7;
-    color: var(--texto);
-  }
-  .narrativa-box strong { color: var(--azul); }
- 
-  .section-hero {
-    background: linear-gradient(135deg, var(--azul) 0%, #2E5FA3 100%);
-    color: white; border-radius: 10px; padding: 20px 24px; margin-bottom: 20px;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .section-hero h2 { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 4px; }
-  .section-hero p { font-size: 13px; color: rgba(255,255,255,0.7); }
- 
-  .footer {
-    background: var(--azul); color: rgba(255,255,255,0.5); font-size: 11px;
-    padding: 16px 32px; display: flex; justify-content: space-between; align-items: center;
-    margin-top: 32px;
-  }
-  .footer .ok-badge { background: rgba(45,106,79,0.3); color: #6EE7B7; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
- 
-  .form-btn {
-    display: inline-block; background: var(--azul-medio); color: white;
-    padding: 12px 24px; text-decoration: none; border-radius: 8px;
-    font-weight: 600; font-size: 14px; margin-top: 12px;
-    transition: background 0.2s;
-  }
-  .form-btn:hover { background: var(--azul); }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>UMBRAL · Agencia Demo · 2026-05-17</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #F8FAFC;
+      color: #1E293B;
+      line-height: 1.5;
+      padding: 2rem 1rem;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+    .header {
+      background: #0F2B3D;
+      padding: 1.5rem 2rem;
+      color: white;
+    }
+    .logo { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.25rem; }
+    .logo span { color: #7AB3C8; }
+    .subhead { font-size: 0.8rem; opacity: 0.7; margin-top: 0.25rem; }
+    .header-meta {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .agencia { font-weight: 600; }
+    .fecha, .id { opacity: 0.8; font-size: 0.75rem; }
+    .card {
+      background: white;
+      border-bottom: 1px solid #E9EDF2;
+      padding: 1.8rem 2rem;
+    }
+    .card:last-child { border-bottom: none; }
+    .card-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #5B6E8C;
+      margin-bottom: 1.25rem;
+      border-left: 3px solid #2C7DA0;
+      padding-left: 0.75rem;
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .kpi-card {
+      background: #F8FAFC;
+      border-radius: 0.75rem;
+      padding: 1rem;
+      border: 1px solid #E9EDF2;
+    }
+    .kpi-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #5B6E8C;
+      letter-spacing: 0.3px;
+    }
+    .kpi-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #0F2B3D;
+      line-height: 1.2;
+      margin-top: 0.25rem;
+    }
+    .kpi-sub {
+      font-size: 0.7rem;
+      color: #6C86A3;
+      margin-top: 0.25rem;
+    }
+    .alerta {
+      border-left: 3px solid;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.75rem;
+      background: #F8FAFC;
+      border-radius: 0 0.5rem 0.5rem 0;
+      font-size: 0.85rem;
+    }
+    .alerta-rojo  { border-left-color: #C7253C; background: #FEF2F2; }
+    .alerta-ambar { border-left-color: #E67E22; background: #FFF8F0; }
+    .alerta-verde { border-left-color: #2C7A47; background: #F0F9F4; }
+    .alerta-titulo { font-weight: 600; margin-bottom: 0.25rem; }
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 1rem;
+      font-size: 0.7rem;
+      font-weight: 500;
+    }
+    .badge-ok { background: #E0F2E9; color: #1E6F3F; }
+    .badge-error { background: #FEE2E2; color: #B91C1C; }
+    .badge-warning { background: #FFEDD5; color: #C2410C; }
+    .indicadores-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .indicadores-table td {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #E9EDF2;
+    }
+    .indicadores-table td:last-child {
+      text-align: right;
+      font-weight: 600;
+    }
+    .rag-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .rag-item {
+      background: #F8FAFC;
+      border-radius: 0.75rem;
+      padding: 1rem;
+      font-size: 0.8rem;
+      border-left: 3px solid;
+    }
+    .rag-perfil { border-left-color: #2C7DA0; background: #F1F5F9; }
+    .rag-mercado { border-left-color: #2C7A47; background: #F0F9F4; }
+    .rag-competencia { border-left-color: #E67E22; background: #FFF8F0; }
+    .rag-digital { border-left-color: #4F46E5; background: #EEF2FF; }
+    .rag-equipo { border-left-color: #9333EA; background: #F8F4FF; }
+    .rag-icon { font-size: 1.2rem; margin-right: 0.3rem; }
+    .rag-note {
+      font-size: 0.7rem;
+      color: #6C86A3;
+      background: #F8FAFC;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .narrativa-box {
+      background: #F1F5F9;
+      padding: 1.25rem;
+      border-radius: 0.75rem;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      border-left: 3px solid #2C7DA0;
+    }
+    .form-btn {
+      display: inline-block;
+      background: #2C7DA0;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      text-decoration: none;
+      border-radius: 2rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      transition: background 0.2s;
+      margin-top: 0.5rem;
+    }
+    .form-btn:hover { background: #1F5E7A; }
+    .footer {
+      background: #0F2B3D;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.7rem;
+      padding: 1rem 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .footer .ok-badge {
+      background: #2C7A47;
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 1rem;
+      font-size: 0.65rem;
+      margin-left: 0.5rem;
+    }
+    canvas { max-width: 100%; height: auto; margin-top: 1rem; }
+    hr { margin: 1rem 0; border: 0; border-top: 1px solid #E9EDF2; }
+    @media (max-width: 640px) {
+      .card { padding: 1.2rem; }
+      .kpi-value { font-size: 1.4rem; }
+    }
+  </style>
 </head>
 <body>
- 
-<div class="header">
-  <div class="header-inner">
-    <div>
-      <div class="logo">UMBRAL<span>·</span></div>
-      <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;">Inteligencia Inmobiliaria Automatizada</div>
-    </div>
+<div class="container">
+  <div class="header">
+    <div class="logo">UMBRAL<span>·</span></div>
+    <div class="subhead">Inteligencia Inmobiliaria Automatizada</div>
     <div class="header-meta">
       <div class="agencia">Agencia Demo · Jávea, Marina Alta</div>
-      <div class="fecha">Informe mensual · Generado automáticamente el 2026-05-17 a las 08:00</div>
-      <div class="id">ID: UMBRAL_2026_05_AG001 · Todas las fuentes validadas ✓</div>
-    </div>
-  </div>
-  <div class="nav">
-    <a class="active" onclick="showSection('resumen', this)">▸ Resumen ejecutivo</a>
-    <a onclick="showSection('inteligencia', this)">▸ Inteligencia LLM</a>
-    <a onclick="showSection('contexto', this)">▸ Contexto macro</a>
-  </div>
-</div>
- 
-<div class="container">
-
-<!-- ══════════════════════════════════════════════════════════
-     SECCIÓN 1: RESUMEN EJECUTIVO (KPIs + Alertas + Verificación)
-══════════════════════════════════════════════════════════ -->
-<div id="s-resumen" class="section active">
- 
-  <div class="kpi-row">
-    <div class="kpi ">
-      <div class="kpi-label">Reputación Google</div>
-      <div class="kpi-val">N/D </div>
-      <div class="kpi-sub">N/D reseñas verificadas</div>
-    </div>
-    <div class="kpi ">
-      <div class="kpi-label">Cartera activa</div>
-      <div class="kpi-val">N/D</div>
-      <div class="kpi-sub">inmuebles únicos</div>
-    </div>
-    <div class="kpi ">
-      <div class="kpi-label">Valor total cartera</div>
-      <div class="kpi-val">N/D</div>
-      <div class="kpi-sub">en venta</div>
-    </div>
-    <div class="kpi ">
-      <div class="kpi-label">Calidad Idealista</div>
-      <div class="kpi-val">N/D%</div>
-      <div class="kpi-sub">calidad óptima</div>
-    </div>
-    <div class="kpi verde">
-      <div class="kpi-label">Alertas críticas</div>
-      <div class="kpi-val">0</div>
-      <div class="kpi-sub">Sin alertas activas</div>
-    </div>
-  </div>
- 
-  <div class="grid2">
-    <div>
-      <div class="card">
-        <div class="card-title">Alertas del sistema</div>
-        <div class="alerta alerta-ambar"><div class="alerta-titulo">GfK alemán</div>Índice en -28, puede alargar decisión</div><div class="alerta alerta-verde"><div class="alerta-titulo">GBP/EUR favorable</div>Cotización en 1.15 – activar leads británicos</div><div class="alerta alerta-verde"><div class="alerta-titulo">Obra nueva activa</div>AEDAS (223 viv.), Alibuilding</div><div class="alerta alerta-ambar"><div class="alerta-titulo">Alerta urbanística</div>PGOU Jávea sin aprobar</div>
-        
-      </div>
-    </div>
- 
-    <div>
-      <div class="card">
-        <div class="card-title">Verificación de fuentes · 2026-05-17</div>
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gris-borde);">
-            <div><div style="font-weight:600;font-size:14px;text-transform:capitalize;">euribor</div></div>
-            <div><span class="badge badge-verde">OK</span></div>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gris-borde);">
-            <div><div style="font-weight:600;font-size:14px;text-transform:capitalize;">ipc</div></div>
-            <div><span class="badge badge-verde">OK</span></div>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gris-borde);">
-            <div><div style="font-weight:600;font-size:14px;text-transform:capitalize;">gbp</div></div>
-            <div><span class="badge badge-verde">OK</span></div>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gris-borde);">
-            <div><div style="font-weight:600;font-size:14px;text-transform:capitalize;">bce</div></div>
-            <div><span class="badge badge-verde">OK</span></div>
-          </div>
-        </div>
-        <div style="margin-top:14px;padding:12px;background:var(--azul-claro);border-radius:8px;font-size:12px;color:var(--azul);">
-          <strong>Estado:</strong> Todas las fuentes de datos macro han sido validadas con éxito.
-        </div>
-      </div>
+      <div class="fecha">Informe mensual · 2026-05-17</div>
+      <div class="id">ID: UMBRAL_2026_05_AG001 · Fuentes validadas ✓</div>
     </div>
   </div>
 
+  <!-- SECCIÓN: KPIs y alertas (solo si hay datos) -->
+  
+
+  <!-- Alertas del sistema (solo si hay alertas) -->
+  
   <div class="card">
-    <div class="card-title">🔍 Radar de alertas del mes</div>
-    <canvas id="chartAlertas" width="400" height="150"></canvas>
-    <div style="margin-top: 16px; font-size: 12px; color: var(--texto-muted);">
-      Distribución de alertas detectadas por UMBRAL. 
-      <strong style="color:var(--rojo);">Rojas</strong> = acción inmediata; 
-      <strong style="color:var(--ambar);">Ámbar</strong> = avisos; 
-      <strong style="color:var(--verde);">Verdes</strong> = oportunidades.
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════════════════════
-     SECCIÓN 2: INTELIGENCIA LLM (Narrativa + Recomendaciones reales)
-══════════════════════════════════════════════════════════ -->
-<div id="s-inteligencia" class="section">
-  <div class="section-hero">
-    <div>
-      <h2>🧠 Análisis estratégico UMBRAL</h2>
-      <p>Generado por IA · Interpretación causal · No descripción de datos</p>
-    </div>
-    <div style="text-align:right;">
-      <div style="font-size:13px;color:rgba(255,255,255,0.7);">Modelo</div>
-      <div style="font-size:20px;font-weight:600;">Groq LLM</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.6);">Temperatura 0.3</div>
-    </div>
+    <div class="card-title">⚠️ Alertas del sistema</div>
+    <div class="alerta alerta-ambar"><div class="alerta-titulo">GfK alemán</div>Índice en -28, puede alargar decisión</div><div class="alerta alerta-verde"><div class="alerta-titulo">GBP/EUR favorable</div>Cotización en 1.15 – activar leads británicos</div><div class="alerta alerta-verde"><div class="alerta-titulo">Obra nueva activa</div>AEDAS (223 viv.), Alibuilding</div><div class="alerta alerta-ambar"><div class="alerta-titulo">Alerta urbanística</div>PGOU Jávea sin aprobar</div>
+    
   </div>
 
-
-
+  <!-- Verificación de fuentes (solo si hay estados) -->
+  
   <div class="card">
-    <div class="card-title">📖 Narrativa inteligente</div>
-    <div class="narrativa-box">
-      El Euríbor en 2.7468 encarece hipotecas, afectando a compradores financiados en Jávea, Marina Alta, donde Agencia Demo puede capturar a cash buyers.
+    <div class="card-title">🔍 Verificación de fuentes</div>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem;">
+      <span class="badge badge-ok">EURIBOR: OK</span><span class="badge badge-ok">IPC: OK</span><span class="badge badge-ok">GBP: OK</span><span class="badge badge-ok">BCE: OK</span>
     </div>
-    <div style="margin-top:12px;font-size:11px;color:var(--texto-muted);">
-      Esta narrativa conecta causa-efecto-acción usando los datos macro y operativos verificados. No es descripción, es interpretación estratégica.
-    </div>
+    <div style="background:#F8FAFC; padding: 0.75rem; border-radius: 0.5rem; font-size:0.8rem;">Todas las fuentes de datos macro han sido validadas con éxito.</div>
   </div>
 
+  <!-- Gráfico de alertas (solo si hay alertas) -->
+  
   <div class="card">
-    <div class="card-title">💡 Recomendaciones estratégicas (generadas por LLM)</div>
-    <div style="display:flex; flex-direction:column; gap:12px;">
-      <div class="alerta alerta-verde"><div class="alerta-titulo">✅ Oportunidad detectada</div>Activar leads británicos porque GBP/EUR es favorable.</div><div class="alerta alerta-ambar"><div class="alerta-titulo">🟡 Recomendación</div>Focalizar en segunda mano porque obra nueva cayó.</div><div class="alerta alerta-rojo"><div class="alerta-titulo">🔴 Acción prioritaria</div>Reducir precios porque diferencial del 21% indica sobrevaloración.</div>
-    </div>
-    <div style="margin-top:16px;padding:12px;background:var(--azul-claro);border-radius:8px;font-size:12px;color:var(--azul);">
-      <strong>Metodología:</strong> Cada recomendación incluye el PORQUÉ (justificación basada en datos), no solo el QUÉ. Prioridad: alertas rojas → ámbar → verdes.
-    </div>
+    <div class="card-title">📈 Radar de alertas del mes</div>
+    <canvas id="chartAlertas" width="400" height="150" style="max-width:100%; height:auto;"></canvas>
+    <div style="margin-top: 0.5rem; font-size:0.7rem; color:#6C86A3;">Distribución de alertas: 🔴 acción inmediata · 🟡 avisos · 🟢 oportunidades</div>
   </div>
 
-  <div class="card" style="text-align:center;">
-    <div class="card-title">📋 Verificación manual</div>
-    <p style="font-size:13px;color:var(--texto-muted);margin-bottom:8px;">¿Los datos operativos son correctos? ¿Faltan propiedades en la cartera?</p>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSe__wnEiwXvgZ04TAZfpq9P3wPkJ5svzmCa6aKBw9hn5h3Yiw/viewform?usp=pp_url&entry.1201755726=UMBRAL_2026_05_AG001" class="form-btn" target="_blank">Completar formulario de verificación →</a>
-  </div>
-</div>
+  <!-- RAG (Contexto histórico) -->
+  
 
-<!-- ══════════════════════════════════════════════════════════
-     SECCIÓN 3: CONTEXTO MACRO
-══════════════════════════════════════════════════════════ -->
-<div id="s-contexto" class="section">
-  <div class="section-hero">
-    <div><h2>📊 Contexto macroeconómico</h2><p>Datos verificados en tiempo real · Fuentes oficiales</p></div>
-    <div style="text-align:right;"><div style="font-size:13px;color:rgba(255,255,255,0.7);">Actualización</div><div style="font-size:20px;font-weight:600;">2026-05-17</div></div>
+  <!-- Inteligencia LLM (solo si hay narrativa o recomendaciones) -->
+  
+  <div class="card">
+    <div class="card-title">🧠 Análisis estratégico (IA)</div>
+    <div style="margin-bottom: 1.5rem;"><div class="narrativa-box">El euríbor en 2.7468 encarece hipotecas, afectando a compradores financiados en Jávea, Marina Alta, donde Agencia Demo puede capturar a cash buyers.</div></div>
+    <div class="card-title" style="margin-top:1rem;">💡 Recomendaciones estratégicas</div><div style="display:flex; flex-direction:column; gap:0.75rem;"><div class="alerta alerta-verde"><div class="alerta-titulo">✅ Oportunidad detectada</div>Activar leads británicos porque GBP/EUR es favorable.</div><div class="alerta alerta-ambar"><div class="alerta-titulo">🟡 Recomendación</div>Focalizar en segunda mano porque obra nueva cayó.</div><div class="alerta alerta-rojo"><div class="alerta-titulo">🔴 Acción prioritaria</div>Reducir precios 3% por diferencial del 21%.</div></div><div style="margin-top: 1rem; padding:0.75rem; background:#F8FAFC; border-radius:0.5rem; font-size:0.75rem; color:#5B6E8C;"><strong>Nota:</strong> Cada recomendación incluye justificación basada en datos. Prioridad: rojo → ámbar → verde.</div>
+    <div style="text-align:center; margin-top:1rem;"><a href="https://docs.google.com/forms/d/e/1FAIpQLSe__wnEiwXvgZ04TAZfpq9P3wPkJ5svzmCa6aKBw9hn5h3Yiw/viewform?usp=pp_url&entry.1201755726=UMBRAL_2026_05_AG001" class="form-btn" target="_blank">📋 Formulario de verificación manual</a></div>
   </div>
 
-  <div class="grid2">
-    <div class="card">
-      <div class="card-title">Indicadores clave</div>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gris-borde);">
-          <div><div style="font-weight:600;font-size:14px;">Euríbor 12M</div><div style="font-size:11px;color:var(--texto-muted);">BCE</div></div>
-          <div style="font-size:20px;font-weight:600;color:var(--azul);">2.7468%</div>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gris-borde);">
-          <div><div style="font-weight:600;font-size:14px;">IPC España</div><div style="font-size:11px;color:var(--texto-muted);">INE · Anual</div></div>
-          <div style="font-size:20px;font-weight:600;color:var(--azul);">2.9%</div>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gris-borde);">
-          <div><div style="font-weight:600;font-size:14px;">GBP / EUR</div><div style="font-size:11px;color:var(--texto-muted);">ExchangeRate API</div></div>
-          <div style="font-size:20px;font-weight:600;color:var(--verde);">1.15 ↑</div>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;">
-          <div><div style="font-weight:600;font-size:14px;">Tasa depósito BCE</div><div style="font-size:11px;color:var(--texto-muted);">ECB SDMX</div></div>
-          <div style="font-size:20px;font-weight:600;color:var(--azul);">2%</div>
-        </div>
+  <!-- Contexto macro (solo si hay al menos un indicador con valor) -->
+  
+  <div class="card">
+    <div class="card-title">📊 Contexto macroeconómico</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+      <div>
+        <table class="indicadores-table">
+          <tr><td><strong>Euríbor 12M</strong><br><span style="font-size:0.7rem;">BCE</span></td><td>2.7468%</td></tr>
+          <tr><td><strong>IPC España</strong><br><span style="font-size:0.7rem;">INE anual</span></td><td>2.9%</td></tr>
+          <tr><td><strong>GBP / EUR</strong><br><span style="font-size:0.7rem;">ExchangeRate API</span></td><td>1.15 ↑</td></tr>
+          <tr><td><strong>Tasa depósito BCE</strong><br><span style="font-size:0.7rem;">ECB SDMX</span></td><td>2%</td></tr>
+        </table>
       </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">Lectura para Jávea, Marina Alta</div>
-      <div class="narrativa-box" style="border-left-color:var(--verde);">
+      
+      <div class="narrativa-box" style="background:#F8FAFC; border-left-color:#2C7A47;">
         Euríbor en <strong>2.7468%</strong> facilita financiación. Clientes con hipoteca variable en rango cómodo.
-        <br><br>GBP/EUR en <strong>1.15</strong> da poder adquisitivo extra del ~8% a compradores británicos. Ventana de oportunidad para campañas específicas.
+        <br><br>GBP/EUR en <strong>1.15</strong> da poder adquisitivo extra a compradores británicos. Ventana de oportunidad.
       </div>
     </div>
   </div>
+
+  <div class="footer">
+    <span>UMBRAL · Inteligencia Inmobiliaria Local · Documento confidencial · 2026-05-17</span>
+    <span class="ok-badge">✓ Generado automáticamente · v1.0 · Groq</span>
+  </div>
 </div>
 
-</div><!-- /container -->
-
-<div class="footer">
-  <span>UMBRAL · Inteligencia Inmobiliaria Local · IA Operativa S.L. · Documento confidencial · 2026-05-17</span>
-  <span class="ok-badge">✓ Generado automáticamente · UMBRAL v1.0 · LLM: Groq</span>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script>
-function showSection(id, el) {
-  try {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
-    document.getElementById('s-' + id).classList.add('active');
-    if (el) el.classList.add('active');
-  } catch(e) { console.error('Error en showSection:', e); }
-}
+(function() {
+  var alertas = [{"nivel":"ambar","titulo":"GfK alemán","descripcion":"Índice en -28, puede alargar decisión"},{"nivel":"verde","titulo":"GBP/EUR favorable","descripcion":"Cotización en 1.15 – activar leads británicos"},{"nivel":"verde","titulo":"Obra nueva activa","descripcion":"AEDAS (223 viv.), Alibuilding"},{"nivel":"ambar","titulo":"Alerta urbanística","descripcion":"PGOU Jávea sin aprobar"}];
+  if (!Array.isArray(alertas)) alertas = [];
+  
+  const contador = { rojo: 0, ambar: 0, verde: 0 };
+  alertas.forEach(a => {
+    const nivel = (a.nivel || '').toLowerCase();
+    if (nivel.includes('rojo')) contador.rojo++;
+    else if (nivel.includes('ambar') || nivel.includes('warning')) contador.ambar++;
+    else if (nivel.includes('verde') || nivel.includes('ok')) contador.verde++;
+  });
 
-try {
-  (function() {
-    var kpis = {"reputacion_google":null,"resenas_google":null,"calidad_idealista":null,"cartera_activa":null,"valor_cartera":null,"alerta_especifica":null};
-    var alertas = [{"nivel":"ambar","titulo":"GfK alemán","descripcion":"Índice en -28, puede alargar decisión"},{"nivel":"verde","titulo":"GBP/EUR favorable","descripcion":"Cotización en 1.15 – activar leads británicos"},{"nivel":"verde","titulo":"Obra nueva activa","descripcion":"AEDAS (223 viv.), Alibuilding"},{"nivel":"ambar","titulo":"Alerta urbanística","descripcion":"PGOU Jávea sin aprobar"}];
-    var contexto = {"euribor_12m":2.7468,"ipc_anual":2.9,"gbp_eur":1.15,"tipo_deposito_bce":2,"gfk_alemania":-28,"cbs_paisesbajos":-30};
-
-    if (typeof kpis !== 'object') kpis = {};
-    if (!Array.isArray(alertas)) alertas = [];
-    if (typeof contexto !== 'object') contexto = {};
-
-    const contador = { rojo: 0, ambar: 0, verde: 0 };
-    alertas.forEach(a => {
-      const nivel = (a.nivel || '').toLowerCase();
-      if (nivel.includes('rojo')) contador.rojo++;
-      else if (nivel.includes('ambar') || nivel.includes('warning')) contador.ambar++;
-      else if (nivel.includes('verde') || nivel.includes('ok')) contador.verde++;
+  const canvas = document.getElementById('chartAlertas');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['🚨 Críticas', '⚠️ Avisos', '✅ Oportunidades'],
+        datasets: [{
+          label: 'Número de alertas',
+          data: [contador.rojo, contador.ambar, contador.verde],
+          backgroundColor: ['#C7253C', '#E67E22', '#2C7A47'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } } }
+      }
     });
-
-    const canvas = document.getElementById('chartAlertas');
-    if (canvas && (contador.rojo + contador.ambar + contador.verde) > 0) {
-      const ctx = canvas.getContext('2d');
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['🚨 Críticas', '⚠️ Avisos', '✅ Oportunidades'],
-          datasets: [{
-            label: 'Número de alertas',
-            data: [contador.rojo, contador.ambar, contador.verde],
-            backgroundColor: ['#991B1B', '#B45309', '#2D6A4F'],
-            borderRadius: 6
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: { legend: { display: false } },
-          scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
-        }
-      });
-    } else if (canvas) {
-      canvas.style.display = 'none';
-      canvas.parentElement.innerHTML += '<p style="color:#999;font-size:13px;">Sin alertas para visualizar.</p>';
-    }
-  })();
-} catch(e) {
-  console.error('Error en gráfico:', e);
-}
+  }
+})();
 </script>
+
+
 </body>
 </html>
