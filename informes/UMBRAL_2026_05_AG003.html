@@ -152,30 +152,30 @@
 <div id="s-resumen" class="section active">
  
   <div class="kpi-row">
-    <div class="kpi ">
+    <div class="kpi verde">
       <div class="kpi-label">Reputación Google</div>
-      <div class="kpi-val">N/D </div>
-      <div class="kpi-sub">N/D reseñas verificadas</div>
-    </div>
-    <div class="kpi ">
-      <div class="kpi-label">Cartera activa</div>
-      <div class="kpi-val">N/D</div>
-      <div class="kpi-sub">inmuebles únicos</div>
-    </div>
-    <div class="kpi ">
-      <div class="kpi-label">Valor total cartera</div>
-      <div class="kpi-val">N/D</div>
-      <div class="kpi-sub">en venta</div>
-    </div>
-    <div class="kpi ">
-      <div class="kpi-label">Calidad Idealista</div>
-      <div class="kpi-val">N/D%</div>
-      <div class="kpi-sub">calidad óptima</div>
+      <div class="kpi-val">4.9 ★</div>
+      <div class="kpi-sub">565 reseñas verificadas</div>
     </div>
     <div class="kpi verde">
+      <div class="kpi-label">Cartera activa</div>
+      <div class="kpi-val">12</div>
+      <div class="kpi-sub">inmuebles únicos</div>
+    </div>
+    <div class="kpi verde">
+      <div class="kpi-label">Valor total cartera</div>
+      <div class="kpi-val">1.78M€</div>
+      <div class="kpi-sub">en venta</div>
+    </div>
+    <div class="kpi ambar">
+      <div class="kpi-label">Calidad Idealista</div>
+      <div class="kpi-val">63%</div>
+      <div class="kpi-sub">por debajo del óptimo</div>
+    </div>
+    <div class="kpi rojo">
       <div class="kpi-label">Alertas críticas</div>
-      <div class="kpi-val">0</div>
-      <div class="kpi-sub">Sin alertas activas</div>
+      <div class="kpi-val">1</div>
+      <div class="kpi-sub">Garaje Aldaia +2 meses sin vender</div>
     </div>
   </div>
  
@@ -184,7 +184,7 @@
       <div class="card">
         <div class="card-title">Alertas del sistema</div>
         <div class="alerta alerta-verde"><div class="alerta-titulo">GBP/EUR favorable</div>Cotización en 1.15 – activar leads británicos</div>
-        
+        <div class="alerta alerta-rojo"><div class="alerta-titulo">🔴 Alerta específica de agencia</div>Garaje Aldaia +2 meses sin vender</div>
       </div>
     </div>
  
@@ -248,7 +248,7 @@
   <div class="card">
     <div class="card-title">📖 Narrativa inteligente</div>
     <div class="narrativa-box">
-      El euribor alto afecta la cartera de ValenCasa Aldaia en Aldaia, L'Horta Oest. La tasa de interés elevada puede disuadir a posibles compradores.
+      La falta de ventas en el Garaje Aldaia afecta a ValenCasa Aldaia en Aldaia, L'Horta Oest, requiriendo acción inmediata para evitar pérdidas.
     </div>
     <div style="margin-top:12px;font-size:11px;color:var(--texto-muted);">
       Esta narrativa conecta causa-efecto-acción usando los datos macro y operativos verificados. No es descripción, es interpretación estratégica.
@@ -258,7 +258,7 @@
   <div class="card">
     <div class="card-title">💡 Recomendaciones estratégicas (generadas por LLM)</div>
     <div style="display:flex; flex-direction:column; gap:12px;">
-      <div class="alerta alerta-verde"><div class="alerta-titulo">✅ Oportunidad detectada</div>Activar leads británicos porque GBP/EUR es favorable.</div><div class="alerta alerta-rojo"><div class="alerta-titulo">🔴 Acción prioritaria</div>Revisar financiamientos porque euribor es alto.</div><div class="alerta alerta-ambar"><div class="alerta-titulo">🟡 Recomendación</div>Monitorear ipc anual para ajustes de precios.</div>
+      <div class="alerta alerta-rojo"><div class="alerta-titulo">🔴 Acción prioritaria</div>Revisar precios Garaje Aldaia porque no vende.</div><div class="alerta alerta-verde"><div class="alerta-titulo">✅ Oportunidad detectada</div>Activar leads británicos por tipo de cambio favorable.</div><div class="alerta alerta-ambar"><div class="alerta-titulo">🟡 Recomendación</div>Mejorar calidad Idealista para aumentar cartera.</div>
     </div>
     <div style="margin-top:16px;padding:12px;background:var(--azul-claro);border-radius:8px;font-size:12px;color:var(--azul);">
       <strong>Metodología:</strong> Cada recomendación incluye el PORQUÉ (justificación basada en datos), no solo el QUÉ. Prioridad: alertas rojas → ámbar → verdes.
@@ -334,7 +334,7 @@ function showSection(id, el) {
 
 try {
   (function() {
-    var kpis = {"reputacion_google":null,"resenas_google":null,"calidad_idealista":null,"cartera_activa":null,"valor_cartera":null,"alerta_especifica":null};
+    var kpis = {"reputacion_google":4.9,"resenas_google":565,"calidad_idealista":63,"cartera_activa":12,"valor_cartera":1783800,"alerta_especifica":"Garaje Aldaia +2 meses sin vender"};
     var alertas = [{"nivel":"verde","titulo":"GBP/EUR favorable","descripcion":"Cotización en 1.15 – activar leads británicos"}];
     var contexto = {"euribor_12m":2.7468,"ipc_anual":2.9,"gbp_eur":1.15,"tipo_deposito_bce":2,"gfk_alemania":null,"cbs_paisesbajos":null};
 
