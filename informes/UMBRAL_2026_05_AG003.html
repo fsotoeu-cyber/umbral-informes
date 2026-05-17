@@ -209,7 +209,7 @@
     </div>
   </div>
 
-  <!-- SECCIÓN: KPIs y alertas (solo si hay datos) -->
+  <!-- SECCIÓN: KPIs (solo si hay datos) -->
   
   <div class="card">
     <div class="card-title">📊 Resumen ejecutivo</div>
@@ -221,7 +221,7 @@
     </div>
   </div>
 
-  <!-- Alertas del sistema (solo si hay alertas) -->
+  <!-- ALERTAS DEL SISTEMA (solo si hay alertas) -->
   
   <div class="card">
     <div class="card-title">⚠️ Alertas del sistema</div>
@@ -229,7 +229,7 @@
     <div class="alerta alerta-rojo"><div class="alerta-titulo">🔴 Alerta específica de agencia</div>Garaje Aldaia +2 meses sin vender</div>
   </div>
 
-  <!-- Verificación de fuentes (solo si hay estados) -->
+  <!-- VERIFICACIÓN DE FUENTES (solo si hay estados) -->
   
   <div class="card">
     <div class="card-title">🔍 Verificación de fuentes</div>
@@ -239,15 +239,18 @@
     <div style="background:#F8FAFC; padding: 0.75rem; border-radius: 0.5rem; font-size:0.8rem;">Todas las fuentes de datos macro han sido validadas con éxito.</div>
   </div>
 
-  <!-- Gráfico de alertas (solo si hay alertas) -->
+  <!-- RADAR DE ALERTAS (solo si hay alertas) -->
   
   <div class="card">
     <div class="card-title">📈 Radar de alertas del mes</div>
     <canvas id="chartAlertas" width="400" height="150" style="max-width:100%; height:auto;"></canvas>
-    <div style="margin-top: 0.5rem; font-size:0.7rem; color:#6C86A3;">Distribución de alertas: 🔴 acción inmediata · 🟡 avisos · 🟢 oportunidades</div>
+    <div style="margin-top: 0.5rem; font-size:0.7rem; color:#6C86A3;">
+      🔴 Acción inmediata · 🟡 Avisos · 🟢 Oportunidades
+    </div>
   </div>
+  
 
-  <!-- RAG (Contexto histórico) -->
+  <!-- CONTEXTO RAG (solo si hay contenido) -->
   
   <div class="card rag-card">
     <div class="card-title">📚 Contexto estratégico histórico (RAG)</div>
@@ -255,26 +258,26 @@
     <div class="rag-note">Nota: Este contexto histórico enriquece el análisis del LLM. Se actualiza desde la hoja RAG_Contexto.</div>
   </div>
 
-  <!-- Inteligencia LLM (solo si hay narrativa o recomendaciones) -->
+  <!-- INTELIGENCIA LLM (solo si hay narrativa o recomendaciones) -->
   
   <div class="card">
     <div class="card-title">🧠 Análisis estratégico (IA)</div>
-    <div style="margin-bottom: 1.5rem;"><div class="narrativa-box">La alta tasa de euríbor y el aumento del IPC anual en Aldaia, L'Horta Oest, afectan la capacidad de compra de los clientes, lo que puede reducir la demanda de propiedades. ValenCasa Aldaia debe adaptarse a este entorno económico para mantener su posición en el mercado.</div></div>
-    <div class="card-title" style="margin-top:1rem;">💡 Recomendaciones estratégicas</div><div style="display:flex; flex-direction:column; gap:0.75rem;"><div class="alerta alerta-ambar"><div class="alerta-titulo">🟡 Recomendación</div>Abordar la venta del garaje sin vender desde hace 2 meses con descuentos o promociones.</div><div class="alerta alerta-verde"><div class="alerta-titulo">✅ Oportunidad detectada</div>Aprovechar la cotización favorable del GBP/EUR para atraer a compradores británicos.</div><div class="alerta alerta-ambar"><div class="alerta-titulo">🟡 Recomendación</div>Mejorar la presencia digital en plataformas como YouTube y TikTok para aumentar la visibilidad.</div></div><div style="margin-top: 1rem; padding:0.75rem; background:#F8FAFC; border-radius:0.5rem; font-size:0.75rem; color:#5B6E8C;"><strong>Nota:</strong> Cada recomendación incluye justificación basada en datos. Prioridad: rojo → ámbar → verde.</div>
+    <div style="margin-bottom: 1.5rem;"><div class="narrativa-box">La situación del garaje en Aldaia sin vender durante más de dos meses y el euríbor en 2.7468% afectan la cartera de ValenCasa Aldaia en Aldaia, L'Horta Oest, requiriendo acciones concretas para abordar estos desafíos.</div></div>
+    <div class="card-title" style="margin-top:1rem;">💡 Recomendaciones estratégicas</div><div style="display:flex; flex-direction:column; gap:0.75rem;"><div class="alerta alerta-ambar"><div class="alerta-titulo">🟡 Recomendación</div>Abordar el garaje sin vender con descuentos o promociones.</div><div class="alerta alerta-ambar"><div class="alerta-titulo">🟡 Recomendación</div>Aprovechar la reputación de ValenCasa Aldaia para atraer compradores cash.</div><div class="alerta alerta-verde"><div class="alerta-titulo">✅ Oportunidad detectada</div>Activar leads británicos con la cotización GBP/EUR favorable.</div></div><div style="margin-top: 1rem; padding:0.75rem; background:#F8FAFC; border-radius:0.5rem; font-size:0.75rem; color:#5B6E8C;"><strong>Nota:</strong> Cada recomendación incluye justificación basada en datos. Prioridad: rojo → ámbar → verde.</div>
     <div style="text-align:center; margin-top:1rem;"><a href="https://docs.google.com/forms/d/e/1FAIpQLSe__wnEiwXvgZ04TAZfpq9P3wPkJ5svzmCa6aKBw9hn5h3Yiw/viewform?usp=pp_url&entry.1201755726=UMBRAL_2026_05_AG003" class="form-btn" target="_blank">📋 Formulario de verificación manual</a></div>
   </div>
 
-  <!-- Contexto macro (solo si hay al menos un indicador con valor) -->
+  <!-- CONTEXTO MACRO (solo si hay al menos un indicador) -->
   
   <div class="card">
     <div class="card-title">📊 Contexto macroeconómico</div>
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
       <div>
         <table class="indicadores-table">
-          <tr><td><strong>Euríbor 12M</strong><br><span style="font-size:0.7rem;">BCE</span></td><td>2.7468%</td></tr>
-          <tr><td><strong>IPC España</strong><br><span style="font-size:0.7rem;">INE anual</span></td><td>2.9%</td></tr>
-          <tr><td><strong>GBP / EUR</strong><br><span style="font-size:0.7rem;">ExchangeRate API</span></td><td>1.15 ↑</td></tr>
-          <tr><td><strong>Tasa depósito BCE</strong><br><span style="font-size:0.7rem;">ECB SDMX</span></td><td>2%</td></tr>
+          <tr><td><strong>Euríbor 12M</strong><br><span style="font-size:0.7rem;">BCE</span></td><td>2.7468%</div></div>
+          <tr><td><strong>IPC España</strong><br><span style="font-size:0.7rem;">INE anual</span></td><td>2.9%</div></div>
+          <tr><td><strong>GBP / EUR</strong><br><span style="font-size:0.7rem;">ExchangeRate API</span></td><td>1.15 ↑</div></div>
+          <tr><td><strong>Tasa depósito BCE</strong><br><span style="font-size:0.7rem;">ECB SDMX</span></td><td>2%</div></div>
         </table>
       </div>
       
@@ -312,7 +315,7 @@
     new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ['🚨 Críticas', '⚠️ Avisos', '✅ Oportunidades'],
+        labels: ['🔴 Críticas', '🟡 Avisos', '🟢 Oportunidades'],
         datasets: [{
           label: 'Número de alertas',
           data: [contador.rojo, contador.ambar, contador.verde],
@@ -322,7 +325,6 @@
       },
       options: {
         responsive: true,
-        maintainAspectRatio: true,
         plugins: { legend: { display: false } },
         scales: { y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } } }
       }
