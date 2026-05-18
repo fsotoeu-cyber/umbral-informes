@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UMBRAL · Agencia Beta · 2026-05-17</title>
+<title>UMBRAL · Agencia Beta · 2026-05-18</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap');
  
@@ -133,7 +133,7 @@
     </div>
     <div class="header-meta">
       <div class="agencia">Agencia Beta · Marina Alta</div>
-      <div class="fecha">Informe mensual · Generado automáticamente el 2026-05-17 a las 08:00</div>
+      <div class="fecha">Informe mensual · Generado automáticamente el 2026-05-18 a las 08:00</div>
       <div class="id">ID: UMBRAL_2026_05_AG002 · Todas las fuentes validadas ✓</div>
     </div>
   </div>
@@ -190,7 +190,7 @@
  
     <div>
       <div class="card">
-        <div class="card-title">Verificación de fuentes · 2026-05-17</div>
+        <div class="card-title">Verificación de fuentes · 2026-05-18</div>
         <div style="display:flex;flex-direction:column;gap:10px;">
           
           <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gris-borde);">
@@ -217,10 +217,13 @@
     </div>
   </div>
 
-  <div class="card">
+  <!-- FIX: Gráfico de alertas con CSS puro (no Chart.js) -->
+  <div class="card" id="radarAlertas">
     <div class="card-title">🔍 Radar de alertas del mes</div>
-    <canvas id="chartAlertas" width="400" height="150"></canvas>
-    <div style="margin-top: 16px; font-size: 12px; color: var(--texto-muted);">
+    <div id="chartAlertasContainer" style="min-height:160px;">
+      <!-- El script rellena esto -->
+    </div>
+    <div style="margin-top: 8px; font-size: 12px; color: var(--texto-muted); text-align:center;">
       Distribución de alertas detectadas por UMBRAL. 
       <strong style="color:var(--rojo);">Rojas</strong> = acción inmediata; 
       <strong style="color:var(--ambar);">Ámbar</strong> = avisos; 
@@ -241,7 +244,7 @@
     <div style="text-align:right;">
       <div style="font-size:13px;color:rgba(255,255,255,0.7);">Modelo</div>
       <div style="font-size:20px;font-weight:600;">Groq LLM</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.6);">Temperatura 0.3</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.6);">Temperatura 0.4</div>
     </div>
   </div>
 
@@ -250,7 +253,7 @@
   <div class="card">
     <div class="card-title">📖 Narrativa inteligente</div>
     <div class="narrativa-box">
-      Euríbor en 2.7468% + Diferencial oferta/cierre del 21.3% en Marina Alta = implicación de que la financiación es más accesible para los compradores, lo que puede aumentar la demanda en el mercado local, pero la diferencia entre la oferta y el cierre puede generar una competencia intensa en el mercado de Agencia Beta.<br><br>RK Valencia Market opera con IA y tour 3D, mientras Agencia Beta tiene reputación 4.9★ y 565 reseñas. Esto implica que Agencia Beta debe diferenciarse por servicio humano y conocimiento local, no por tecnología, para atraer a los compradores extranjeros activos en la zona, como los holandeses y británicos.<br><br>En los próximos 30 días, Agencia Beta debe activar leads británicos porque el tipo de cambio GBP/EUR es favorable, con una cotización en 1.15, lo que puede atraer a más compradores extranjeros a la zona de Marina Alta.
+      El Euríbor en 2.7468% + la variación interanual del 11.1% en Marina Alta = una oportunidad para Agencia Beta de ofrecer financiaciones atractivas a los compradores, aprovechando el aumento de la demanda en la zona. Esto implica que Agencia Beta debe estar preparada para ofrecer asesoramiento financiero personalizado a sus clientes, destacando las ventajas de la zona de Marina Alta.<br><br>Un competidor como Alibuilding opera con una cartera diversificada de propiedades en Marina Alta, mientras Agencia Beta tiene una fuerte presencia en el mercado local con una red de contactos establecida. Esto implica que Agencia Beta debe enfocarse en ofrecer un servicio personalizado y de alta calidad a sus clientes, aprovechando su conocimiento local y su red de contactos para diferenciarse de la competencia.<br><br>En los próximos 30 días, Agencia Beta debe desarrollar una campaña de marketing dirigida a compradores extranjeros, especialmente de Holanda y Reino Unido, porque el dato de 1004 operaciones de compradores holandeses y 831 operaciones de compradores británicos en la zona es un indicador claro de la demanda internacional en Marina Alta.
     </div>
     <div style="margin-top:12px;font-size:11px;color:var(--texto-muted);">
       Esta narrativa conecta causa-efecto-acción usando los datos macro y operativos verificados. No es descripción, es interpretación estratégica.
@@ -260,7 +263,7 @@
   <div class="card">
     <div class="card-title">💡 Recomendaciones estratégicas (generadas por LLM)</div>
     <div style="display:flex; flex-direction:column; gap:12px;">
-      <div class="alerta alerta-verde"><div class="alerta-titulo">✅ Oportunidad detectada</div>Activar campaña de marketing dirigida a compradores británicos [GBP/EUR 1.15] en un plazo de 15 días para aprovechar la cotización favorable.</div><div class="alerta alerta-ambar"><div class="alerta-titulo">🟡 Recomendación</div>Desarrollar un plan de diferenciación de servicios [RK Valencia Market con IA y tour 3D] en un plazo de 60 días para destacar la reputación y el conocimiento local de Agencia Beta.</div><div class="alerta alerta-ambar"><div class="alerta-titulo">🟡 Recomendación</div>Establecer alianzas con promotores inmobiliarios como AEDAS [223 viviendas en obra nueva] en un plazo de 90 días para ofrecer a los clientes de Agencia Beta acceso a propiedades de alta calidad en Marina Alta.</div>
+      <div class="alerta alerta-verde"><div class="alerta-titulo">✅ Oportunidad detectada</div>Activar campaña de marketing en redes sociales y plataformas inmobiliarias para atraer a compradores extranjeros, especialmente de Holanda y Reino Unido, porque [1004 operaciones de compradores holandeses y 831 operaciones de compradores británicos] en un plazo de 30 días.</div><div class="alerta alerta-ambar"><div class="alerta-titulo">🟡 Recomendación</div>Ofrecer asesoramiento financiero personalizado a los compradores, aprovechando el Euríbor en 2.7468% y la variación interanual del 11.1% en Marina Alta, porque [Euríbor en 2.7468% y variación interanual del 11.1%] en un plazo de 60 días.</div><div class="alerta alerta-ambar"><div class="alerta-titulo">🟡 Recomendación</div>Desarrollar una estrategia de diferenciación basada en el servicio personalizado y el conocimiento local, para competir con operadores como Alibuilding, porque [fuerte presencia en el mercado local y red de contactos establecida] en un plazo de 90 días.</div>
     </div>
     <div style="margin-top:16px;padding:12px;background:var(--azul-claro);border-radius:8px;font-size:12px;color:var(--azul);">
       <strong>Metodología:</strong> Cada recomendación incluye el PORQUÉ (justificación basada en datos), no solo el QUÉ. Prioridad: alertas rojas → ámbar → verdes.
@@ -280,7 +283,7 @@
 <div id="s-contexto" class="section">
   <div class="section-hero">
     <div><h2>📊 Contexto macroeconómico</h2><p>Datos verificados en tiempo real · Fuentes oficiales</p></div>
-    <div style="text-align:right;"><div style="font-size:13px;color:rgba(255,255,255,0.7);">Actualización</div><div style="font-size:20px;font-weight:600;">2026-05-17</div></div>
+    <div style="text-align:right;"><div style="font-size:13px;color:rgba(255,255,255,0.7);">Actualización</div><div style="font-size:20px;font-weight:600;">2026-05-18</div></div>
   </div>
 
   <div class="grid2">
@@ -319,66 +322,80 @@
 </div><!-- /container -->
 
 <div class="footer">
-  <span>UMBRAL · Inteligencia Inmobiliaria Local · IA Operativa S.L. · Documento confidencial · 2026-05-17</span>
+  <span>UMBRAL · Inteligencia Inmobiliaria Local · IA Operativa S.L. · Documento confidencial · 2026-05-18</span>
   <span class="ok-badge">✓ Generado automáticamente · UMBRAL v1.0 · LLM: Groq</span>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script>
 function showSection(id, el) {
   try {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
+    document.querySelectorAll('.nav a').forEach(function(a) { a.classList.remove('active'); });
     document.getElementById('s-' + id).classList.add('active');
     if (el) el.classList.add('active');
   } catch(e) { console.error('Error en showSection:', e); }
 }
 
+// FIX: Gráfico de alertas con CSS puro (sin Chart.js)
 try {
   (function() {
-    var kpis = {"reputacion_google":null,"resenas_google":null,"calidad_idealista":null,"cartera_activa":null,"valor_cartera":null,"alerta_especifica":null};
     var alertas = [{"nivel":"ambar","titulo":"GfK alemán","descripcion":"Índice en -28, puede alargar decisión"},{"nivel":"verde","titulo":"GBP/EUR favorable","descripcion":"Cotización en 1.15 – activar leads británicos"},{"nivel":"verde","titulo":"Obra nueva activa","descripcion":"AEDAS (223 viv.), Alibuilding"},{"nivel":"ambar","titulo":"Alerta urbanística","descripcion":"PGOU Jávea sin aprobar"}];
-    var contexto = {"euribor_12m":2.7468,"ipc_anual":2.9,"gbp_eur":1.15,"tipo_deposito_bce":2,"gfk_alemania":-28,"cbs_paisesbajos":-30};
-
-    if (typeof kpis !== 'object') kpis = {};
+    var kpis = {"reputacion_google":null,"resenas_google":null,"calidad_idealista":null,"cartera_activa":null,"valor_cartera":null,"alerta_especifica":null};
+    
     if (!Array.isArray(alertas)) alertas = [];
-    if (typeof contexto !== 'object') contexto = {};
+    if (typeof kpis !== 'object') kpis = {};
 
-    const contador = { rojo: 0, ambar: 0, verde: 0 };
-    alertas.forEach(a => {
-      const nivel = (a.nivel || '').toLowerCase();
-      if (nivel.includes('rojo')) contador.rojo++;
-      else if (nivel.includes('ambar') || nivel.includes('warning')) contador.ambar++;
-      else if (nivel.includes('verde') || nivel.includes('ok')) contador.verde++;
+    var contador = { rojo: 0, ambar: 0, verde: 0 };
+    
+    alertas.forEach(function(a) {
+      var nivel = (a.nivel || '').toLowerCase();
+      if (nivel.indexOf('rojo') > -1) contador.rojo++;
+      else if (nivel.indexOf('ambar') > -1 || nivel.indexOf('warning') > -1) contador.ambar++;
+      else if (nivel.indexOf('verde') > -1 || nivel.indexOf('ok') > -1) contador.verde++;
     });
 
-    const canvas = document.getElementById('chartAlertas');
-    if (canvas && (contador.rojo + contador.ambar + contador.verde) > 0) {
-      const ctx = canvas.getContext('2d');
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['🚨 Críticas', '⚠️ Avisos', '✅ Oportunidades'],
-          datasets: [{
-            label: 'Número de alertas',
-            data: [contador.rojo, contador.ambar, contador.verde],
-            backgroundColor: ['#991B1B', '#B45309', '#2D6A4F'],
-            borderRadius: 6
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: { legend: { display: false } },
-          scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
-        }
-      });
-    } else if (canvas) {
-      canvas.style.display = 'none';
-      canvas.parentElement.innerHTML += '<p style="color:#999;font-size:13px;">Sin alertas para visualizar.</p>';
+    if (kpis.alerta_especifica) {
+      contador.rojo++;
+    }
+
+    var total = contador.rojo + contador.ambar + contador.verde;
+    var container = document.getElementById('chartAlertasContainer');
+
+    if (container && total > 0) {
+      var maxVal = Math.max(contador.rojo, contador.ambar, contador.verde, 1);
+      var rojoHeight = (contador.rojo / maxVal) * 100;
+      var ambarHeight = (contador.ambar / maxVal) * 100;
+      var verdeHeight = (contador.verde / maxVal) * 100;
+      
+      var html = '<div style="display:flex;align-items:flex-end;justify-content:center;gap:48px;height:140px;padding:20px 0;">' +
+        '<div style="text-align:center;min-width:90px;">' +
+          '<div style="font-size:32px;font-weight:700;color:#991B1B;">' + contador.rojo + '</div>' +
+          '<div style="height:' + rojoHeight + 'px;background:linear-gradient(180deg,#DC2626,#991B1B);border-radius:8px 8px 0 0;margin:12px 0;box-shadow:0 4px 12px rgba(153,27,27,0.3);"></div>' +
+          '<div style="font-size:12px;font-weight:600;color:#6B7280;text-transform:uppercase;letter-spacing:0.6px;">🚨 Críticas</div>' +
+        '</div>' +
+        '<div style="text-align:center;min-width:90px;">' +
+          '<div style="font-size:32px;font-weight:700;color:#B45309;">' + contador.ambar + '</div>' +
+          '<div style="height:' + ambarHeight + 'px;background:linear-gradient(180deg,#F59E0B,#B45309);border-radius:8px 8px 0 0;margin:12px 0;box-shadow:0 4px 12px rgba(180,83,9,0.3);"></div>' +
+          '<div style="font-size:12px;font-weight:600;color:#6B7280;text-transform:uppercase;letter-spacing:0.6px;">⚠️ Avisos</div>' +
+        '</div>' +
+        '<div style="text-align:center;min-width:90px;">' +
+          '<div style="font-size:32px;font-weight:700;color:#2D6A4F;">' + contador.verde + '</div>' +
+          '<div style="height:' + verdeHeight + 'px;background:linear-gradient(180deg,#10B981,#2D6A4F);border-radius:8px 8px 0 0;margin:12px 0;box-shadow:0 4px 12px rgba(45,106,79,0.3);"></div>' +
+          '<div style="font-size:12px;font-weight:600;color:#6B7280;text-transform:uppercase;letter-spacing:0.6px;">✅ Oportunidades</div>' +
+        '</div>' +
+      '</div>';
+      
+      container.innerHTML = html;
+    } else if (container) {
+      container.innerHTML = '<p style="color:#999;font-size:13px;padding:20px;text-align:center;">Sin alertas para visualizar.</p>';
     }
   })();
 } catch(e) {
   console.error('Error en gráfico:', e);
+  var container = document.getElementById('chartAlertasContainer');
+  if (container) {
+    container.innerHTML = '<p style="color:#999;font-size:13px;padding:20px;text-align:center;">Error al cargar visualización.</p>';
+  }
 }
 </script>
 </body>
