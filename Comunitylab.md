@@ -358,6 +358,25 @@ Ingesta externa validada con POST y HTTP 200 (captura 12). El procesamiento post
 
 ---
 
+## 🚀 Roadmap y Evolución del Producto
+
+### 1. Notificaciones por correo electrónico
+Integrar un **nodo de correo en n8n** para notificar al equipo de marketing sobre eventos relevantes del proceso, por ejemplo nuevos activos pendientes de curaduría y activos aprobados cuya persistencia en OCI haya sido confirmada.
+
+**Beneficio esperado:** mejorar la coordinación del equipo y reducir la necesidad de revisar manualmente el panel para detectar novedades.
+
+### 2. Integración con Discord
+Desarrollar un bot o una integración que capture mensajes de canales autorizados de Discord y los adapte al **contrato de entrada existente** (`origen_comunidad`, `periodo_referencia`, `interacciones`). Los mensajes se enviarán al **webhook actual de WF1**, reutilizando la normalización, el análisis con LLM, el scoring y la generación de activos.
+
+**Beneficio esperado:** convertir CommunityLab en un sistema capaz de recibir interacciones directamente desde la comunidad, reduciendo la ingesta manual.
+
+### 3. Gobernanza y trazabilidad
+**Ampliar** la gobernanza ya operativa (curaduría humana obligatoria, registro de decisiones en Google Sheets, seguimiento de `estado_proceso` y auditoría de descartes en Data Table) con controles de acceso más finos y mayor trazabilidad de extremo a extremo, sin eliminar el requisito de aprobación humana antes de persistir en OCI Object Storage.
+
+**Nota:** las funcionalidades de este roadmap se consideran **mejoras futuras** hasta que su implementación y funcionamiento hayan sido probados.
+
+---
+
 ## 👥 Equipo 36
 
 - **Proyecto:** CommunityLab  
