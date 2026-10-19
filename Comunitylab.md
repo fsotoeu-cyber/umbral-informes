@@ -26,6 +26,8 @@ La landing pública es una **vista demostrativa de presentación**: puede inclui
 
 La curaduría operativa se realiza en el **panel Streamlit**. La persistencia en OCI la ejecuta **WF2 en n8n** tras una decisión humana registrada en Sheets.
 
+> **Pendiente en Netlify:** mostrar el mismo aviso en la página y alinear textos técnicos (PAR de solo escritura; ruta `activos/aprobados/{execution_id}/{asset_id}.json`) para que no contradigan este README.
+
 ---
 
 ## 🎯 Justificación y Propuesta de Valor
@@ -95,14 +97,16 @@ end
 subgraph WF2["7. Procesamiento WF2"]
 R --> T[WF2 Schedule / Manual]
 S --> T
-T -->|aprobado + PUT OK| U[almacenado_oci]
-T -->|rechazado| V[cerrado_rechazado]
-T -->|fallo PUT| W[error_oci]
-U --> X[(OCI Object Storage)]
+T -->|aprobado| PUT[PUT a OCI]
+PUT --> X[(OCI Object Storage)]
+X --> CHECK{Resultado de subida verificado}
+CHECK -->|Correcto| U[Actualizar Sheet: almacenado_oci]
+CHECK -->|Error o no verificado| W[Registrar error o diagnóstico]
+T -->|rechazado| V[Actualizar Sheet: cerrado_rechazado]
 end
 
 subgraph METRICAS["8. Observabilidad WF3"]
-Y[Schedule diario] --> Z[Metricas_diarias / Metricas_descartes]
+Y[Schedule diario] --> Z[Metricas_diarias / Metricas_descartes_diarias]
 end
 
 style A fill:#e1f5fe,stroke:#0288d1
@@ -115,14 +119,15 @@ style X fill:#ffebee,stroke:#c62828
 
 **Contrato de decisión**
 
-- **Streamlit** registra la decisión humana en Google Sheets (`decision`, y campos de auditoría como `user` / `decision_at` / `comentario` cuando aplica).
-- **WF2** procesa esa decisión y escribe el resultado operativo en `estado_proceso`:
-  - aprobado + PUT verificado → `almacenado_oci`
-  - rechazado → `cerrado_rechazado`
-  - fallo de subida → `error_oci`
+- **Streamlit** registra la decisión humana en Google Sheets (`decision` y, cuando aplica, `user`, `decision_at`, `comentario`).
+- **WF2** procesa esa decisión:
+  - aprobado → PUT a OCI → si la subida se verifica → `estado_proceso = almacenado_oci`
+  - rechazado → `estado_proceso = cerrado_rechazado`
+  - fallo o respuesta no verificada → registro de error / diagnóstico (`error_oci` u otros estados de diagnóstico definidos en el flujo)
 
-**Ingesta externa (solo WF1):** validada con cliente HTTP (ReqBin): `POST` → respuesta HTTP 200 con `{"message":"Workflow was started"}`.  
-Eso acredita que el webhook **aceptó iniciar** el workflow. El procesamiento completo se acredita con la ejecución exitosa de WF1 y las filas en Curaduria; la persistencia, tras aprobación humana, con WF2 y el objeto en OCI (idealmente el mismo `execution_id` / `asset_id` en la cadena de evidencias).
+**Ingesta externa (solo WF1):** validada con cliente HTTP (ReqBin): `POST` → respuesta HTTP 200 con `{"message":"Workflow was started"}`.
+
+Eso acredita que el webhook **aceptó iniciar** el workflow. El procesamiento posterior se acredita con la ejecución exitosa de WF1 y las filas en Curaduria. La persistencia se verifica tras la aprobación humana, mediante WF2 y el objeto correspondiente en OCI. Para una cadena E2E, relacionar el mismo `execution_id` y `asset_id` en esas evidencias.
 
 Endpoint de referencia:
 
@@ -181,20 +186,23 @@ communitylab/
 ### 2. `WF2-curaduria-oci.json`
 
 - **Disparador:** Schedule cada **15 minutos** + Manual Trigger.
-- **Filtro:** filas con decisión humana explícita (p. ej. `decision = aprobado` y `estado_proceso = pendiente_decision`), más lógica de reproceso controlado para estados de error/diagnóstico.
+- **Filtro:** filas con decisión humana explícita (p. ej. `decision = aprobado` o `rechazado`), excluyendo pendientes y estados ya cerrados (`almacenado_oci`, `cerrado_rechazado`); permite reintento controlado en estados de error/diagnóstico.
 - **OCI:** **PUT** a Object Storage mediante **Pre-Authenticated Request (PAR)** de **solo escritura**.
 - **Ruta de objetos:**
   ```text
   activos/aprobados/{execution_id}/{asset_id}.json
   ```
 - **Cierre de ciclo (resultado de WF2):**
-  - Aprobado y PUT OK → `estado_proceso = almacenado_oci`
-  - Rechazado → `cerrado_rechazado`
-  - Fallo de subida → `error_oci` (reintentable)
+  1. Si `decision = aprobado` → PUT a OCI  
+  2. Si la subida se verifica (HTTP 200/201) → actualizar Sheet: `estado_proceso = almacenado_oci`  
+  3. Si la subida falla o no se verifica → registrar error / diagnóstico (`error_oci`, `respuesta_oci_no_verificada`, etc.)  
+  4. Si `decision = rechazado` → actualizar Sheet: `cerrado_rechazado` (sin persistir en OCI)
+
+**Seguridad OCI:** el PAR usado en desarrollo fue **rotado** tras exposición accidental en exports de workflow. En producción el valor del PAR **no** se versiona en el repositorio; se configura solo en n8n (credencial / variable de entorno / campo del nodo). Los JSON exportados en el repo deben ir con `PAR_BASE` vacío o placeholder.
 
 ### 3. `WF3-metricas-diarias.json`
 
-- **Disparador:** Schedule diario.
+- **Disparador:** Schedule **diario** (intervalo en días; p. ej. cada 1 día, a la hora/minuto configurados) + Manual Trigger para pruebas.
 - **Salida:** pestañas `Metricas_diarias` y `Metricas_descartes_diarias`.
 - **Indicadores:** totales, pendientes, aprobados, rechazados, `almacenado_oci`, distribución por tipo, score promedio, embudo de motivos de descarte.
 - Listo para conectar **Power BI / Looker Studio**.
@@ -207,10 +215,9 @@ El archivo [`dashboard/dashboard_curaduria.py`](dashboard/dashboard_curaduria.py
 
 - Visualización de activos pendientes (LinkedIn / FAQ / Newsletter).
 - Acciones **Aprobar** / **Rechazar** que escriben en Google Sheets.
-- Posibilidad de editar el texto antes de decidir.
-- **Contenido y OCI:** el panel trabaja sobre la fila del Sheet (`contenido` / `contenido_json`). La versión que WF2 empaqueta hacia OCI es la **versión aprobada presente en la fila** en el momento del procesamiento, junto con metadatos de auditoría cuando están disponibles. Si el flujo actual preserva además el original del LLM en `contenido_json`, ese campo permanece como rastro de generación.
-
-**Actualización en Sheets:** se actualiza la fila seleccionada en el panel. Para integridad, se recomienda (y, si está implementado en el panel, se aplica) comprobar correspondencia con `execution_id` y `asset_id` antes de guardar cambios.
+- El panel permite revisar y editar el texto antes de registrar la decisión humana.
+- **WF2** empaqueta los campos de contenido presentes en la fila al momento del procesamiento, junto con los metadatos de auditoría disponibles.
+- Como mejora de integridad, se recomienda comprobar la correspondencia de `execution_id` y `asset_id` antes de actualizar una fila.
 
 Guía: [`dashboard/README-dashboard.md`](dashboard/README-dashboard.md)  
 **Panel en vivo:** [https://g10-latam-equipo-36.streamlit.app/](https://g10-latam-equipo-36.streamlit.app/)
@@ -273,7 +280,7 @@ Guía: [`dashboard/README-dashboard.md`](dashboard/README-dashboard.md)
 3. Credenciales:
    - **Groq API:** Header Auth (`Authorization: Bearer <TU_GROQ_API_KEY>`).
    - **Google Sheets:** OAuth2 o Service Account.
-   - **OCI:** URL del **PAR** (solo escritura) en el nodo PUT de WF2.
+   - **OCI:** URL del **PAR** (solo escritura) configurada **únicamente en n8n**, nunca en el repositorio. Si un PAR se expuso, **rotarlo** en la consola OCI y actualizar solo la instancia de n8n.
 
 ### 2. Dashboard Streamlit
 
@@ -297,6 +304,15 @@ Body de ejemplo: `workflows/sample-payload-ingesta.json`.
 Respuesta esperada del webhook: HTTP **200** con `{"message":"Workflow was started"}`.
 
 Para una cadena E2E completa, relacionar el mismo `execution_id` (y `asset_id`) en: ejecución Success de WF1 → fila en Curaduria → decisión humana → ejecución de WF2 → objeto en OCI.
+
+---
+
+## 🔒 Seguridad
+
+- Secretos (Groq, Google, PAR de OCI) solo en n8n / Streamlit Cloud; **no** versionados en el repo.
+- PAR de OCI con permiso mínimo (escritura de objetos). **El PAR utilizado en desarrollo fue rotado** tras una exposición en un export de workflow; el valor activo no se publica en GitHub.
+- Texto de usuario tratado como dato; validación de salidas JSON; **HITL antes de persistir**.
+- Datos de prueba / mock en validaciones del hackathon.
 
 ---
 
@@ -338,7 +354,7 @@ Ingesta externa validada con POST y HTTP 200 (captura 12). El procesamiento post
 | **6. Demostración de ≥ 3 ejemplos de transformación** | ✅ Cumplido | Testimonio→LinkedIn · duda→FAQ · logro→Newsletter (+ descartes auditados). |
 | **7. Documentación y diagrama del pipeline** | ✅ Cumplido | Este README, contratos de datos y `docs/capturas/`. |
 | **Diferencial: Curaduría Humana (HITL)** | ✅ Cumplido | Streamlit operativo + Google Sheets + WF2. |
-| **Diferencial: Observabilidad y métricas** | ✅ Cumplido | WF3 + pestañas de métricas diarias y descartes. |
+| **Diferencial: Observabilidad y métricas** | ✅ Cumplido | WF3 + pestañas `Metricas_diarias` / `Metricas_descartes_diarias`. |
 
 ---
 
@@ -361,4 +377,4 @@ Ingesta externa validada con POST y HTTP 200 (captura 12). El procesamiento post
 ---
 
 **CommunityLab — La IA propone · El humano decide · OCI guarda solo lo aprobado.**
-
+```
